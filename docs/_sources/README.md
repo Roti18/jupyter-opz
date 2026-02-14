@@ -1,6 +1,6 @@
-# jupyter-opz
+# Jupyter Book Optimization
 
-Proyek menggunakan Jupyter Book v1.0.3. Sistem otomatis mendeteksi file baru dan mengatur sidebar berdasarkan judul H1 di dalam file.
+Proyek menggunakan Jupyter Book v1.0.3.
 
 ## 1. SETUP AWAL
 ### Windows
@@ -13,7 +13,7 @@ bash ./install.sh
 ```
 
 ## 2. CARA PENULISAN
-Setiap file baru (`.md` / `.ipynb`) **wajib** diawali judul H1 agar nama di sidebar terdeteksi otomatis:
+Setiap file baru (`.md` / `.ipynb`) wajib diawali judul H1:
 ```markdown
 # Judul Materi
 ```

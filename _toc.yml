@@ -1,12 +1,11 @@
-# Table of contents
-# Learn more at https://jupyterbook.org/customize/toc.html
-
 format: jb-book
 root: intro
 chapters:
-  # Cara SYSTEM: Glob bakal nyari file otomatis.
-  # Judul di sidebar diambil langsung dari <h1> (#) pertama di tiap file.
-  - glob: "*"
-  - glob: md/*
-    # Jika ingin sistem ngasih nomor 1, 2, 3 otomatis di sidebar:
-    # numbered: true
+- file: markdown
+  title: "Markdown Files"
+- file: markdown-notebooks
+  title: "Notebooks with MyST Markdown"
+- file: notebooks
+  title: "notebooks"
+- file: md/1_test-x
+  title: "Ini File Testing"

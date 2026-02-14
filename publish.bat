@@ -1,7 +1,7 @@
 @echo off
 setlocal
 echo ==========================================
-echo    Deploying Jupyter Book (Built-in Sys)
+echo    Deploying Jupyter Book to /docs
 echo ==========================================
 
 :: Activate venv
@@ -13,23 +13,24 @@ if exist venv\Scripts\activate (
     exit /b 1
 )
 
-:: Step 1: Build (Sesuai cara sistem, jupyter-book ngebaca glob di _toc.yml)
-echo [1/3] Building Jupyter Book...
+echo [1/4] System: Auto-Detecting H1 Titles...
+powershell -Command "$ignore = @('intro.md', 'README.md', 'requirements-install.txt', '.nojekyll'); $files = Get-ChildItem -Path . -Include *.md, *.ipynb -Recurse | Where-Object { $_.Name -notin $ignore -and $_.FullName -notmatch 'venv|_build|docs' }; $nonNumbered = $files | Where-Object { $_.Name -notmatch '^\d+' } | Sort-Object Name; $numbered = $files | Where-Object { $_.Name -match '^\d+' } | Sort-Object { [int]($_.Name -replace '^(\d+).*', '$1') }; $finalList = $nonNumbered + $numbered; $toc = 'format: jb-book' + \"`n\" + 'root: intro' + \"`n\" + 'chapters:'; foreach ($f in $finalList) { $content = Get-Content $f.FullName -TotalCount 20; $h1 = $content | Where-Object { $_ -match '^#\s+(.+)' } | Select-Object -First 1; if ($h1) { $title = ($h1 -replace '^#\s+', '').Trim() } else { $title = ($f.BaseName -replace '^\d+[_-]', '' -replace '[-_]', ' ').Trim() }; $relPath = (Resolve-Path -Path $f.FullName -Relative) -replace '^\.\\', '' -replace '\.(md|ipynb)$', '' -replace '\\', '/'; $toc += \"`n\" + '- file: ' + $relPath + \"`n\" + '  title: \"' + $title + '\"' }; $toc | Out-File -FilePath _toc.yml -Encoding ASCII"
+
+echo [2/4] Building Jupyter Book...
 jupyter-book build .
 
-:: Step 2: Prepare docs folder
-echo [2/3] Preparing /docs folder...
+echo [3/4] Preparing /docs folder...
 if exist docs rmdir /S /Q docs
 mkdir docs
 
-:: Step 3: Copy HTML files to docs
-echo [3/3] Copying build files to /docs...
+echo [4/4] Copying build files to /docs...
 xcopy /E /H /Y _build\html docs\
 
 :: Create .nojekyll
 echo. > docs\.nojekyll
 
 echo ==========================================
-echo    Selesai! Sistem Berjalan di /docs
+echo    Selesai! Sidebar & Judul diupdate otomatis.
+echo    File HTML ada di folder /docs
 echo ==========================================
 pause

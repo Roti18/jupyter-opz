@@ -23,39 +23,24 @@ python -m pip install --upgrade pip
 pip install -r requirements-install.txt
 
 echo [4/6] Creating and Building 'Pendat' Folder...
-:: Create a template book in 'Pendat' if it doesn't exist
 if not exist Pendat (
     jupyter-book create Pendat
 )
 
-:: Build the book
 echo Building Jupyter Book...
 jupyter-book build Pendat/
 
 echo [5/6] Moving all contents from Pendat to Root...
-:: Move everything from Pendat to the current directory
 xcopy /E /H /Y Pendat .
 
 echo [6/6] Cleaning up Pendat folder...
-:: Remove Pendat folder as requested
 rmdir /S /Q Pendat
 
 :: Create .nojekyll in root
 echo. > .nojekyll
 
 echo [7/7] Auto-Generating Table of Contents (_toc.yml)...
-powershell -Command ^
-    "$ignore = @('intro.md', 'README.md', 'requirements.txt', 'requirements-install.txt', '.nojekyll'); ^
-    $files = Get-ChildItem -Path . -Include *.md, *.ipynb -Recurse | Where-Object { $_.Name -notin $ignore -and $_.FullName -notmatch 'venv|_build|docs' }; ^
-    $nonNumbered = $files | Where-Object { $_.Name -notmatch '^\d+' } | Sort-Object Name; ^
-    $numbered = $files | Where-Object { $_.Name -match '^\d+' } | Sort-Object { [int]($_.Name -replace '^(\d+).*', '$1') }; ^
-    $finalList = $nonNumbered + $numbered; ^
-    $toc = 'format: jb-book' + \"`n\" + 'root: intro' + \"`n\" + 'chapters:'; ^
-    foreach ($f in $finalList) { ^
-        $relPath = (Resolve-Path -Path $f.FullName -Relative) -replace '^\.\\', '' -replace '\.(md|ipynb)$', '' -replace '\\', '/'; ^
-        $toc += \"`n\" + '- file: ' + $relPath; ^
-    }; ^
-    $toc | Out-File -FilePath _toc.yml -Encoding ASCII"
+powershell -Command "$ignore = @('intro.md', 'README.md', 'requirements-install.txt', '.nojekyll'); $files = Get-ChildItem -Path . -Include *.md, *.ipynb -Recurse | Where-Object { $_.Name -notin $ignore -and $_.FullName -notmatch 'venv|_build|docs' }; $nonNumbered = $files | Where-Object { $_.Name -notmatch '^\d+' } | Sort-Object Name; $numbered = $files | Where-Object { $_.Name -match '^\d+' } | Sort-Object { [int]($_.Name -replace '^(\d+).*', '$1') }; $finalList = $nonNumbered + $numbered; $toc = 'format: jb-book' + \"`n\" + 'root: intro' + \"`n\" + 'chapters:'; foreach ($f in $finalList) { $content = Get-Content $f.FullName -TotalCount 20; $h1 = $content | Where-Object { $_ -match '^#\s+(.+)' } | Select-Object -First 1; if ($h1) { $title = ($h1 -replace '^#\s+', '').Trim() } else { $title = ($f.BaseName -replace '^\d+[_-]', '' -replace '[-_]', ' ').Trim() }; $relPath = (Resolve-Path -Path $f.FullName -Relative) -replace '^\.\\', '' -replace '\.(md|ipynb)$', '' -replace '\\', '/'; $toc += \"`n\" + '- file: ' + $relPath + \"`n\" + '  title: \"' + $title + '\"' }; $toc | Out-File -FilePath _toc.yml -Encoding ASCII"
 
 echo ==========================================
 echo    Process Finished! 
