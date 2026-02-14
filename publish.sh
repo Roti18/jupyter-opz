@@ -12,26 +12,58 @@ else
     exit 1
 fi
 
-# Step 1: Update Table of Contents
-echo "[1/4] Updating _toc.yml..."
-python3 update_toc.py
+echo "[1/4] Auto-Generating Table of Contents (_toc.yml)..."
+# Bash logic to detect files and sort: Non-numbered first, then numbered.
+IGNORE="intro.md README.md requirements.txt requirements-install.txt .nojekyll"
 
-# Step 2: Build the book
+echo "format: jb-book" > _toc.yml
+echo "root: intro" >> _toc.yml
+echo "chapters:" >> _toc.yml
+
+# Function to get title from H1 or filename
+get_title() {
+    local file=$1
+    local title=$(grep -m 1 "^# " "$file" | sed 's/^# //')
+    if [ -z "$title" ]; then
+        title=$(basename "$file" | sed -E 's/^[0-9]+[_-]//; s/\.(md|ipynb)$//; s/[-_]/ /g')
+    fi
+    echo "$title"
+}
+
+# Collect and sort files
+# Non-numbered files
+for f in $(find . -maxdepth 2 -name "*.md" -o -name "*.ipynb" | grep -vE "venv|_build|docs"); do
+    fname=$(basename "$f")
+    if [[ ! " $IGNORE " =~ " $fname " ]] && [[ ! "$fname" =~ ^[0-9] ]]; then
+        rel_path=$(echo "$f" | sed 's|^\./||; s|\.\(md\|ipynb\)$||')
+        title=$(get_title "$f")
+        echo "- file: $rel_path" >> _toc.yml
+        echo "  title: \"$title\"" >> _toc.yml
+    fi
+done
+
+# Numbered files
+for f in $(find . -maxdepth 2 -name "*.md" -o -name "*.ipynb" | grep -vE "venv|_build|docs"); do
+    fname=$(basename "$f")
+    if [[ ! " $IGNORE " =~ " $fname " ]] && [[ "$fname" =~ ^[0-9] ]]; then
+        rel_path=$(echo "$f" | sed 's|^\./||; s|\.\(md\|ipynb\)$||')
+        title=$(get_title "$f")
+        echo "- file: $rel_path" >> _toc.yml
+        echo "  title: \"$title\"" >> _toc.yml
+    fi
+done
+
 echo "[2/4] Building Jupyter Book..."
 jupyter-book build .
 
-# Step 2: Prepare docs folder
-echo "[2/3] Preparing /docs folder..."
+echo "[3/4] Preparing /docs folder..."
 rm -rf docs
 mkdir docs
 
-# Step 3: Copy HTML files to docs
-echo "[3/3] Copying build files to /docs..."
+echo "[4/4] Copying build files to /docs..."
 cp -R _build/html/. docs/
-
-# Create .nojekyll
 touch docs/.nojekyll
 
 echo "=========================================="
-echo "   Done! HTML files are in /docs"
+echo "   Selesai! Sidebar & Judul otomatis."
 echo "=========================================="
