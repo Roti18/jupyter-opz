@@ -19,7 +19,7 @@ source venv/bin/activate
 
 echo "[3/6] Installing Requirements (Tools)..."
 python3 -m pip install --upgrade pip
-pip install -r scripts/requirements-install.txt
+pip install -r scripts/requirements.txt
 
 echo "[4/6] Initializing Project..."
 # Only create temporary folder if it doesn't exist
@@ -44,20 +44,32 @@ rm -f markdown.md markdown-notebooks.md notebooks.ipynb
 rm -f _build/html/markdown.html _build/html/markdown-notebooks.html _build/html/notebooks.html
 rm -f docs/markdown.html docs/markdown-notebooks.html docs/notebooks.html
 
-echo "[7/7] Finishing Installation..."
-
-# Project Title Setup
+# Project Identity Setup
 echo "------------------------------------------"
-read -p "Enter your Project/Book Title (e.g. My Awesome Book): " PROJECT_TITLE
-if [ -z "$PROJECT_TITLE" ]; then
-    PROJECT_TITLE="Jupyter Optimization"
+read -p "Enter Author Name (Default: Roti18): " AUTHOR_NAME
+if [ -z "$AUTHOR_NAME" ]; then AUTHOR_NAME="Roti18"; fi
+
+read -p "Enter GitHub Username (Default: Roti18): " GITHUB_USER
+if [ -z "$GITHUB_USER" ]; then GITHUB_USER="Roti18"; fi
+
+CURRENT_YEAR=$(date +%Y)
+REPO_NAME=$(basename "$(pwd)")
+REPO_URL="https://github.com/$GITHUB_USER/$REPO_NAME"
+
+# Update _config.yml
+if [ -f "_config.yml" ]; then
+    sed -i "s/^author: .*/author: \"$AUTHOR_NAME\"/" _config.yml
+    sed -i "s|^  url: .*|  url: $REPO_URL|" _config.yml
+    # Add or update copyright year
+    if grep -q "^copyright:" _config.yml; then
+        sed -i "s/^copyright: .*/copyright: \"$CURRENT_YEAR\"/" _config.yml
+    else
+        sed -i "/^author:/a copyright: \"$CURRENT_YEAR\"" _config.yml
+    fi
 fi
 
-# Update _config.yml with the new title
-if [ -f "_config.yml" ]; then
-    sed -i "s/^title: .*/title: \"$PROJECT_TITLE\"/" _config.yml
-fi
-echo "[SUCCESS] Project Title set to: $PROJECT_TITLE"
+echo "[SUCCESS] Identity updated: $AUTHOR_NAME | $CURRENT_YEAR"
+echo "[SUCCESS] Repository set to: $REPO_URL"
 
 bash scripts/publish.sh
 

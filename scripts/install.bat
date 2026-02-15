@@ -20,7 +20,7 @@ call venv\Scripts\activate
 
 echo [3/6] Installing Requirements...
 python -m pip install --upgrade pip
-pip install -r scripts\requirements-install.txt
+pip install -r scripts\requirements.txt
 
 echo [4/6] Initializing Project...
 if not exist Pendat (
@@ -44,15 +44,27 @@ del /F /Q markdown.md markdown-notebooks.md notebooks.ipynb 2>nul
 
 echo [7/7] Finishing Installation...
 
-:: Project Title Setup
-set /p PROJECT_TITLE="Enter your Project/Book Title (e.g. My Awesome Book): "
-if "%PROJECT_TITLE%"=="" set PROJECT_TITLE=Jupyter Optimization
+:: Project Identity Setup
+echo ------------------------------------------
+set /p AUTHOR_NAME="Enter Author Name (Default: Roti18): "
+if "%AUTHOR_NAME%"=="" set AUTHOR_NAME=Roti18
 
-:: Update _config.yml with the new title
+set /p GITHUB_USER="Enter GitHub Username (Default: Roti18): "
+if "%GITHUB_USER%"=="" set GITHUB_USER=Roti18
+
+:: Get Current Year
+for /f "tokens=2 delims==" %%i in ('wmic os get localdatetime /value') do set dt=%%i
+set CURRENT_YEAR=%dt:~0,4%
+:: Get Repo Name (Folder Name)
+for %%I in (.) do set REPO_NAME=%%~nxI
+set REPO_URL=https://github.com/%GITHUB_USER%/%REPO_NAME%
+
+:: Update _config.yml
 if exist _config.yml (
-    powershell -Command "(Get-Content _config.yml) -replace '^title: .*', 'title: \"%PROJECT_TITLE%\"' | Set-Content _config.yml"
+    powershell -Command "$c = Get-Content _config.yml; $c = $c -replace '^author: .*', 'author: \"%AUTHOR_NAME%\"'; $c = $c -replace '^  url: .*', '  url: %REPO_URL%'; if ($c -match '^copyright:') { $c = $c -replace '^copyright: .*', 'copyright: \"%CURRENT_YEAR%\"' } else { $c = $c -replace '^author: .*', \"author: `\"%AUTHOR_NAME%`\"`ncopyright: `\"%CURRENT_YEAR%`\"\" }; Set-Content _config.yml $c"
 )
-echo [SUCCESS] Project Title set to: %PROJECT_TITLE%
+echo [SUCCESS] Identity updated: %AUTHOR_NAME% ^| %CURRENT_YEAR%
+echo [SUCCESS] Repository set to: %REPO_URL%
 
 call scripts\publish.bat
 

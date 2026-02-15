@@ -13,7 +13,7 @@ else
 fi
 
 echo "[1/4] Auto-Generating Table of Contents (_toc.yml)..."
-IGNORE="intro.md README.md requirements.txt requirements-install.txt .nojekyll markdown.md markdown-notebooks.md notebooks.ipynb"
+IGNORE="intro.md README.md requirements.txt .nojekyll markdown.md markdown-notebooks.md notebooks.ipynb"
 
 echo "format: jb-book" > _toc.yml
 echo "root: intro" >> _toc.yml
@@ -61,10 +61,6 @@ mkdir docs
 echo "[4/4] Copying build files to /docs..."
 cp -R _build/html/. docs/
 touch docs/.nojekyll
-
-# Post-processing: Replace all types of em-dash/dash with pipe in titles
-echo "[EXTRA] Fixing Title separators (em-dash/dash -> |)..."
-find docs -name "*.html" -exec sed -i -E 's/<title>(.*) (&#8212;|&mdash;|—|-) (.*)<\/title>/<title>\1 | \3<\/title>/g' {} +
 
 echo "=========================================="
 echo "   Done! Sidebar & Titles automated."

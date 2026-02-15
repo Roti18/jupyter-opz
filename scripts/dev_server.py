@@ -21,7 +21,7 @@ def is_local_access():
 
 def get_editable_files():
     """Get list of files that can be edited/deleted"""
-    ignore = ['intro.md', 'README.md', 'requirements-install.txt', '.nojekyll', 'markdown.md', 'markdown-notebooks.md', 'notebooks.ipynb', '_toc.yml', '_config.yml']
+    ignore = ['intro.md', 'README.md', 'requirements.txt', '.nojekyll', 'markdown.md', 'markdown-notebooks.md', 'notebooks.ipynb', '_toc.yml', '_config.yml']
     files = []
     # Root files
     for f in glob.glob("*.md") + glob.glob("*.ipynb"):
@@ -34,7 +34,7 @@ def get_editable_files():
 
 def update_toc():
     """Otomatis mengupdate _toc.yml berdasarkan isi folder md/"""
-    ignore = ['intro.md', 'README.md', 'requirements-install.txt', '.nojekyll', 'markdown.md', 'markdown-notebooks.md', 'notebooks.ipynb']
+    ignore = ['intro.md', 'README.md', 'requirements.txt', '.nojekyll', 'markdown.md', 'markdown-notebooks.md', 'notebooks.ipynb']
     files = []
     # Root files
     for f in glob.glob("*.md") + glob.glob("*.ipynb"):
@@ -78,24 +78,10 @@ def update_toc():
         f.write(toc_content)
 
 def build_book():
-    """Menjalankan jupyter-book build secara penuh & membersihkan em-dash di Title"""
+    """Menjalankan jupyter-book build secara penuh"""
     try:
         # Gunakan --all agar sidebar di SEMUA halaman terupdate saat TOC berubah
         subprocess.run(["jupyter-book", "build", "--all", "."], check=True)
-        
-        # Post-processing: Ganti em-dash/dash dengan pipe di dalam tag <title>
-        html_files = glob.glob(os.path.join(BUILD_DIR, "**", "*.html"), recursive=True)
-        for html_file in html_files:
-            try:
-                with open(html_file, 'r', encoding='utf-8') as f:
-                    content = f.read()
-                # Ganti em-dash/dash dengan pipe di dalam tag <title>
-                new_content = re.sub(r'<title>(.*) (&#8212;|&mdash;|—|--|-) (.*)</title>', r'<title>\1 | \3</title>', content)
-                if new_content != content:
-                    with open(html_file, 'w', encoding='utf-8') as f:
-                        f.write(new_content)
-            except: pass
-            
         return True
     except:
         return False
