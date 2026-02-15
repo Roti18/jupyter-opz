@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>jupyter-opz &#8212; My sample book</title>
+    <title>Jupyter-OPZ &#8212; My sample book</title>
   
   
   
@@ -180,7 +180,9 @@
             </li>
         </ul>
         <ul class="nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="md/00_panduan-dev.html">Panduan Pengembangan (Dev Mode)</a></li>
 <li class="toctree-l1"><a class="reference internal" href="md/01_mulai-disini.html">Mulai Menulis</a></li>
+<li class="toctree-l1"><a class="reference internal" href="md/03_tester.html">tester bang</a></li>
 </ul>
 
     </div>
@@ -366,7 +368,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>jupyter-opz</h1>
+    <h1>Jupyter-OPZ</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -376,18 +378,16 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setup-awal">1. SETUP AWAL</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#windows">Windows</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#macos-linux">macOS / Linux</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quick-start-master-script">Quick Start (Master Script)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#installation-setup">1. Installation &amp; Setup</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#development-mode-markdown-canvas">2. Development Mode (Markdown Canvas)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#build-publish">3. Build &amp; Publish</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reset-project">4. Reset Project</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cara-penulisan">2. CARA PENULISAN</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#update-publish">3. UPDATE &amp; PUBLISH</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Windows</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">macOS / Linux</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deploy">4. DEPLOY</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#writing-content">Writing Content</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deployment-github-pages">Deployment (GitHub Pages)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#project-structure">Project Structure</a></li>
 </ul>
             </nav>
         </div>
@@ -400,59 +400,79 @@ document.write(`
                 <article class="bd-article">
                   
   <section class="tex2jax_ignore mathjax_ignore" id="jupyter-opz">
-<h1>jupyter-opz<a class="headerlink" href="#jupyter-opz" title="Link to this heading">#</a></h1>
-<p>Proyek menggunakan Jupyter Book v1.0.3. Sistem otomatis mendeteksi file baru dan mengatur sidebar berdasarkan judul H1 di dalam file.</p>
-<section id="setup-awal">
-<h2>1. SETUP AWAL<a class="headerlink" href="#setup-awal" title="Link to this heading">#</a></h2>
-<section id="windows">
-<h3>Windows<a class="headerlink" href="#windows" title="Link to this heading">#</a></h3>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">install</span><span class="o">.</span><span class="n">bat</span>
+<h1>Jupyter-OPZ<a class="headerlink" href="#jupyter-opz" title="Link to this heading">#</a></h1>
+<p>A streamlined Jupyter Book (v1.0.3) environment with an integrated Markdown Canvas editor for rapid content creation.</p>
+<section id="quick-start-master-script">
+<h2>Quick Start (Master Script)<a class="headerlink" href="#quick-start-master-script" title="Link to this heading">#</a></h2>
+<p>All operations are managed through the master script <a class="reference external" href="http://run.sh">run.sh</a> (Linux/macOS) or run.bat (Windows).</p>
+<section id="installation-setup">
+<h3>1. Installation &amp; Setup<a class="headerlink" href="#installation-setup" title="Link to this heading">#</a></h3>
+<p>Initialize the virtual environment, install dependencies, and perform the initial build.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Linux/macOS</span>
+bash<span class="w"> </span>run.sh<span class="w"> </span>install
+
+<span class="c1"># Windows</span>
+run.bat<span class="w"> </span>install
 </pre></div>
 </div>
 </section>
-<section id="macos-linux">
-<h3>macOS / Linux<a class="headerlink" href="#macos-linux" title="Link to this heading">#</a></h3>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>bash<span class="w"> </span>./install.sh
+<section id="development-mode-markdown-canvas">
+<h3>2. Development Mode (Markdown Canvas)<a class="headerlink" href="#development-mode-markdown-canvas" title="Link to this heading">#</a></h3>
+<p>Start the local server to access the Markdown Canvas editor. This command automatically activates the Canvas feature.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Linux/macOS</span>
+bash<span class="w"> </span>run.sh<span class="w"> </span>dev
+
+<span class="c1"># Windows</span>
+run.bat<span class="w"> </span>dev
+</pre></div>
+</div>
+<ul class="simple">
+<li><p>Book Link: <a class="reference external" href="http://127.0.0.1:5000">http://127.0.0.1:5000</a></p></li>
+<li><p>Canvas Link: <a class="reference external" href="http://127.0.0.1:5000/canvas">http://127.0.0.1:5000/canvas</a></p></li>
+</ul>
+</section>
+<section id="build-publish">
+<h3>3. Build &amp; Publish<a class="headerlink" href="#build-publish" title="Link to this heading">#</a></h3>
+<p>Update the Table of Contents and build the static HTML for deployment.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>bash<span class="w"> </span>run.sh<span class="w"> </span>publish
+</pre></div>
+</div>
+</section>
+<section id="reset-project">
+<h3>4. Reset Project<a class="headerlink" href="#reset-project" title="Link to this heading">#</a></h3>
+<p>Wipe all build artifacts, virtual environments, and temporary files.</p>
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>bash<span class="w"> </span>run.sh<span class="w"> </span>reset
 </pre></div>
 </div>
 </section>
 </section>
-<section id="cara-penulisan">
-<h2>2. CARA PENULISAN<a class="headerlink" href="#cara-penulisan" title="Link to this heading">#</a></h2>
-<p>Setiap file baru (<code class="docutils literal notranslate"><span class="pre">.md</span></code> / <code class="docutils literal notranslate"><span class="pre">.ipynb</span></code>) <strong>wajib</strong> diawali judul H1 agar nama di sidebar terdeteksi otomatis:</p>
-<div class="highlight-markdown notranslate"><div class="highlight"><pre><span></span><span class="gh"># Judul Materi</span>
-</pre></div>
-</div>
-<p>Gunakan format nama file <code class="docutils literal notranslate"><span class="pre">0x_nama.md</span></code> agar urutan materi terstruktur (disarankan menggunakan 2 digit):</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>01_pengenalan.md
-02_dasar.md
-10_lanjutan.md
-</pre></div>
-</div>
+<hr class="docutils" />
+<section id="writing-content">
+<h2>Writing Content<a class="headerlink" href="#writing-content" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>File Naming: Use 0x_name.md format (e.g., 01_introduction.md).</p></li>
+<li><p>H1 Titles: Every file must start with an H1 title (# Title).</p></li>
+<li><p>Location: Put source files in the md/ directory.</p></li>
+</ul>
 </section>
-<section id="update-publish">
-<h2>3. UPDATE &amp; PUBLISH<a class="headerlink" href="#update-publish" title="Link to this heading">#</a></h2>
-<section id="id1">
-<h3>Windows<a class="headerlink" href="#id1" title="Link to this heading">#</a></h3>
-<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">publish</span><span class="o">.</span><span class="n">bat</span>
-</pre></div>
-</div>
+<hr class="docutils" />
+<section id="deployment-github-pages">
+<h2>Deployment (GitHub Pages)<a class="headerlink" href="#deployment-github-pages" title="Link to this heading">#</a></h2>
+<ol class="arabic simple">
+<li><p>Build the book: <code class="docutils literal notranslate"><span class="pre">bash</span> <span class="pre">run.sh</span> <span class="pre">publish</span></code></p></li>
+<li><p>Push everything to GitHub.</p></li>
+<li><p>In GitHub Settings &gt; Pages, set Branch to <code class="docutils literal notranslate"><span class="pre">main</span></code> and Folder to <code class="docutils literal notranslate"><span class="pre">/docs</span></code>.</p></li>
+</ol>
 </section>
-<section id="id2">
-<h3>macOS / Linux<a class="headerlink" href="#id2" title="Link to this heading">#</a></h3>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>bash<span class="w"> </span>./publish.sh
-</pre></div>
-</div>
-</section>
-</section>
-<section id="deploy">
-<h2>4. DEPLOY<a class="headerlink" href="#deploy" title="Link to this heading">#</a></h2>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>git<span class="w"> </span>add<span class="w"> </span>.
-git<span class="w"> </span>commit<span class="w"> </span>-m<span class="w"> </span><span class="s2">&quot;Update&quot;</span>
-git<span class="w"> </span>push<span class="w"> </span>origin<span class="w"> </span>main
-</pre></div>
-</div>
-<p>Pastikan GitHub Pages mengarah ke branch <code class="docutils literal notranslate"><span class="pre">main</span></code> folder <code class="docutils literal notranslate"><span class="pre">/docs</span></code>.</p>
+<hr class="docutils" />
+<section id="project-structure">
+<h2>Project Structure<a class="headerlink" href="#project-structure" title="Link to this heading">#</a></h2>
+<ul class="simple">
+<li><p>md/: Markdown source files.</p></li>
+<li><p>docs/: static HTML (for web).</p></li>
+<li><p>scripts/: System logic.</p></li>
+<li><p><a class="reference external" href="http://run.sh">run.sh</a> / run.bat: Master commands.</p></li>
+</ul>
 </section>
 </section>
 
@@ -502,18 +522,16 @@ git<span class="w"> </span>push<span class="w"> </span>origin<span class="w"> </
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#setup-awal">1. SETUP AWAL</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#windows">Windows</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#macos-linux">macOS / Linux</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quick-start-master-script">Quick Start (Master Script)</a><ul class="nav section-nav flex-column">
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#installation-setup">1. Installation &amp; Setup</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#development-mode-markdown-canvas">2. Development Mode (Markdown Canvas)</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#build-publish">3. Build &amp; Publish</a></li>
+<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reset-project">4. Reset Project</a></li>
 </ul>
 </li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#cara-penulisan">2. CARA PENULISAN</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#update-publish">3. UPDATE &amp; PUBLISH</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id1">Windows</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#id2">macOS / Linux</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deploy">4. DEPLOY</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#writing-content">Writing Content</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deployment-github-pages">Deployment (GitHub Pages)</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#project-structure">Project Structure</a></li>
 </ul>
   </nav></div>
 
