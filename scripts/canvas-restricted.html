@@ -3,13 +3,16 @@
 <head>
     <title>Akses Dibatasi</title>
     <style>
-        body { background: #0d1117; color: #c9d1d9; display: flex; align-items: center; justify-content: center; height: 100vh; font-family: -apple-system, sans-serif; text-align: center; margin: 0; }
-        .box { padding: 40px; border: 1px solid #30363d; border-radius: 12px; background: #161b22; max-width: 450px; box-shadow: 0 8px 24px rgba(0,0,0,0.5); }
-        h1 { color: #f85149; margin-top: 0; }
-        p { line-height: 1.6; font-size: 1.05rem; }
-        code { background: #0d1117; padding: 2px 6px; border-radius: 4px; color: #58a6ff; }
-        .footer { margin-top: 25px; font-size: 0.9rem; color: #8b949e; border-top: 1px solid #30363d; padding-top: 15px; }
-        a { color: #58a6ff; }
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { background: #000000; color: #c9d1d9; display: flex; align-items: center; justify-content: center; height: 100vh; font-family: -apple-system, 'Segoe UI', sans-serif; }
+        .box { padding: 45px; border: 1px solid #1a1a1a; border-radius: 10px; background: #0a0a0a; max-width: 460px; text-align: center; }
+        h1 { color: #f0f0f0; margin-bottom: 16px; font-size: 1.4rem; font-weight: 600; }
+        p { line-height: 1.7; font-size: 0.95rem; color: #8b949e; margin-bottom: 10px; }
+        p b { color: #c9d1d9; }
+        code { background: #111111; padding: 3px 8px; border-radius: 4px; color: #58a6ff; font-size: 0.9rem; }
+        .footer { margin-top: 28px; padding-top: 18px; border-top: 1px solid #151515; }
+        a { color: #58a6ff; text-decoration: none; font-size: 0.9rem; }
+        a:hover { text-decoration: underline; }
     </style>
 </head>
 <body>
@@ -18,7 +21,7 @@
         <p>Fitur <b>Markdown Canvas</b> hanya tersedia dalam mode <b>Development (Offline)</b>.</p>
         <p>Halaman ini tidak bisa diakses melalui GitHub Pages.</p>
         <div class="footer">
-            Jalankan di komputer lokal:<br>
+            <p>Jalankan di komputer lokal:</p>
             <code>bash run.sh dev</code><br><br>
             <a href="index.html">Kembali ke Halaman Utama</a>
         </div>
