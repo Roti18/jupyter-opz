@@ -72,10 +72,24 @@ def update_toc():
         f.write(toc_content)
 
 def build_book():
-    """Menjalankan jupyter-book build secara penuh"""
+    """Menjalankan jupyter-book build secara penuh & membersihkan em-dash di Title"""
     try:
         # Gunakan --all agar sidebar di SEMUA halaman terupdate saat TOC berubah
         subprocess.run(["jupyter-book", "build", "--all", "."], check=True)
+        
+        # Post-processing: Ganti em-dash (&#8212;) dengan | di semua file HTML
+        html_files = glob.glob(os.path.join(BUILD_DIR, "**", "*.html"), recursive=True)
+        for html_file in html_files:
+            try:
+                with open(html_file, 'r', encoding='utf-8') as f:
+                    content = f.read()
+                # Ganti em-dash/dash dengan pipe di dalam tag <title>
+                new_content = re.sub(r'<title>(.*) (&#8212;|&mdash;|—|-) (.*)</title>', r'<title>\1 | \3</title>', content)
+                if new_content != content:
+                    with open(html_file, 'w', encoding='utf-8') as f:
+                        f.write(new_content)
+            except: pass
+            
         return True
     except:
         return False

@@ -62,6 +62,10 @@ echo "[4/4] Copying build files to /docs..."
 cp -R _build/html/. docs/
 touch docs/.nojekyll
 
+# Post-processing: Replace all types of em-dash/dash with pipe in titles
+echo "[EXTRA] Fixing Title separators (em-dash/dash -> |)..."
+find docs -name "*.html" -exec sed -i -E 's/<title>(.*) (&#8212;|&mdash;|—|-) (.*)<\/title>/<title>\1 | \3<\/title>/g' {} +
+
 echo "=========================================="
 echo "   Done! Sidebar & Titles automated."
 echo "=========================================="

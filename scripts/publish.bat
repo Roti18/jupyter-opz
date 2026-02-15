@@ -25,9 +25,11 @@ mkdir docs
 
 echo [4/4] Copying build files to /docs...
 xcopy /E /H /Y _build\html docs\
-
-:: Create .nojekyll
 echo. > docs\.nojekyll
+
+:: Post-processing: Replace em-dash with pipe in titles
+echo [EXTRA] Fixing Title separators...
+powershell -Command "Get-ChildItem -Path docs -Filter *.html -Recurse | ForEach-Object { (Get-Content $_.FullName) -replace ' &#8212; ', ' | ' | Set-Content $_.FullName }"
 
 echo ==========================================
 echo    Done! Sidebar ^& Titles automated.

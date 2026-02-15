@@ -44,11 +44,25 @@ rm -f markdown.md markdown-notebooks.md notebooks.ipynb
 rm -f _build/html/markdown.html _build/html/markdown-notebooks.html _build/html/notebooks.html
 rm -f docs/markdown.html docs/markdown-notebooks.html docs/notebooks.html
 
-echo "[7/7] Publishing to /docs..."
+echo "[7/7] Finishing Installation..."
+
+# Project Title Setup
+echo "------------------------------------------"
+read -p "Enter your Project/Book Title (e.g. My Awesome Book): " PROJECT_TITLE
+if [ -z "$PROJECT_TITLE" ]; then
+    PROJECT_TITLE="Jupyter Optimization"
+fi
+
+# Update _config.yml with the new title
+if [ -f "_config.yml" ]; then
+    sed -i "s/^title: .*/title: \"$PROJECT_TITLE\"/" _config.yml
+fi
+echo "[SUCCESS] Project Title set to: $PROJECT_TITLE"
+
 bash scripts/publish.sh
 
 echo "=========================================="
 echo "   Process Finished & Published!"
 echo "   Venv: Active"
-echo "   Output: _build/ and docs/ folders"
+echo "   Run 'bash run.sh dev' to start Canvas."
 echo "=========================================="

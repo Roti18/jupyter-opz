@@ -42,12 +42,23 @@ echo. > .nojekyll
 echo [8/8] Cleaning up sample files...
 del /F /Q markdown.md markdown-notebooks.md notebooks.ipynb 2>nul
 
-echo [7/7] Publishing to /docs...
+echo [7/7] Finishing Installation...
+
+:: Project Title Setup
+set /p PROJECT_TITLE="Enter your Project/Book Title (e.g. My Awesome Book): "
+if "%PROJECT_TITLE%"=="" set PROJECT_TITLE=Jupyter Optimization
+
+:: Update _config.yml with the new title
+if exist _config.yml (
+    powershell -Command "(Get-Content _config.yml) -replace '^title: .*', 'title: \"%PROJECT_TITLE%\"' | Set-Content _config.yml"
+)
+echo [SUCCESS] Project Title set to: %PROJECT_TITLE%
+
 call scripts\publish.bat
 
 echo ==========================================
 echo    Process Finished ^& Published!
 echo    Venv: Active
-echo    Output: _build\ and docs\ folders
+echo    Run 'run.bat dev' to start Canvas.
 echo ==========================================
 pause
