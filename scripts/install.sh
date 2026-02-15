@@ -62,6 +62,7 @@ CURRENT_YEAR=$(date +%Y)
 if [ -f "_config.yml" ]; then
     sed -i "s/^author: .*/author: \"$AUTHOR_NAME\"/" _config.yml
     sed -i "s|^  url: .*|  url: $REPO_URL|" _config.yml
+    sed -i "s/^  branch: .*/  branch: main/" _config.yml
     # Add or update copyright year
     if grep -q "^copyright:" _config.yml; then
         sed -i "s/^copyright: .*/copyright: \"$CURRENT_YEAR\"/" _config.yml
