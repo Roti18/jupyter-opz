@@ -475,7 +475,11 @@ def save():
 @app.route('/')
 def home():
     idx = os.path.join(BUILD_DIR, 'index.html')
-    if not os.path.exists(idx): return redirect(url_for('canvas'))
+    if not os.path.exists(idx):
+        # Hanya redirect ke canvas kalau mode development + local
+        if VENV_EXISTS and is_local_access():
+            return redirect(url_for('canvas'))
+        return render_template_string(RESTRICTED_HTML), 403
     return send_from_directory(BUILD_DIR, 'index.html')
 
 @app.route('/<path:path>')
