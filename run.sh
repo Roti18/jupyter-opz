@@ -13,6 +13,7 @@ show_usage() {
     echo "  install   : Setup environment and build book"
     echo "  dev       : Start dev server & Markdown Canvas"
     echo "  publish   : Update TOC and build to /docs"
+    echo "  config    : Update Author identity & GitHub Repo"
     echo "  reset     : Full cleanup (removes venv, build, etc)"
     echo "=========================================="
 }
@@ -31,6 +32,9 @@ case $CMD in
         ;;
     publish)
         bash scripts/publish.sh
+        ;;
+    config)
+        bash scripts/setup.sh
         ;;
     reset)
         echo "Resetting project..."
