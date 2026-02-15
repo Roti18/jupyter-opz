@@ -3,194 +3,30 @@ import subprocess
 import glob
 import re
 import shutil
+import logging
 from flask import Flask, request, jsonify, render_template_string, send_from_directory, redirect, url_for
 
-import logging
+# Silence Flask logging
 log = logging.getLogger('werkzeug')
 log.setLevel(logging.ERROR)
 
 app = Flask(__name__)
-# Deteksi VENV: Jika folder venv tidak ada, maka dianggap mode PRODUKSI (Web/GitHub)
-VENV_EXISTS = os.path.exists(os.path.join(os.getcwd(), 'venv'))
+
+# --- CONFIG & DETECTION ---
+ROOT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
+VENV_EXISTS = os.path.exists(os.path.join(ROOT_DIR, 'venv'))
 MODE = os.environ.get("MODE", "DEVELOPMENT" if VENV_EXISTS else "PRODUCTION")
-BUILD_DIR = os.path.join(os.getcwd(), '_build', 'html')
+BUILD_DIR = os.path.join(ROOT_DIR, '_build', 'html')
 
 def is_local_access():
     """Cek apakah akses berasal dari localhost atau 127.0.0.1"""
-    return request.remote_addr in ['127.0.0.1', 'localhost', '::1']
+    # Cek IP remote
+    remote = request.remote_addr
+    # Cek Host header (untuk jaga-jaga kalau remote_addr terdistorsi)
+    host = request.host.split(':')[0]
+    return remote in ['127.0.0.1', 'localhost', '::1'] or host in ['127.0.0.1', 'localhost']
 
-def get_editable_files():
-    """Get list of files that can be edited/deleted"""
-    ignore = ['intro.md', 'README.md', 'requirements.txt', '.nojekyll', 'markdown.md', 'markdown-notebooks.md', 'notebooks.ipynb', '_toc.yml', '_config.yml']
-    files = []
-    # Root files
-    for f in glob.glob("*.md") + glob.glob("*.ipynb"):
-        if f not in ignore: files.append(f)
-    # md/ folder files
-    if os.path.exists('md'):
-        for f in glob.glob("md/*.md") + glob.glob("md/*.ipynb"):
-            if os.path.basename(f) not in ignore: files.append(f)
-    return sorted(files)
-
-def update_toc():
-    """Otomatis mengupdate _toc.yml berdasarkan isi folder md/"""
-    ignore = ['intro.md', 'README.md', 'requirements.txt', '.nojekyll', 'markdown.md', 'markdown-notebooks.md', 'notebooks.ipynb']
-    files = []
-    # Root files
-    for f in glob.glob("*.md") + glob.glob("*.ipynb"):
-        if f not in ignore: files.append(f)
-    # md/ folder files
-    if os.path.exists('md'):
-        for f in glob.glob("md/*.md") + glob.glob("md/*.ipynb"):
-            if os.path.basename(f) not in ignore: files.append(f)
-
-    # Sort logic (Numbered first, then alphabetical)
-    numbered = []
-    non_numbered = []
-    for f in files:
-        basename = os.path.basename(f)
-        if re.match(r'^\d+', basename):
-            numbered.append(f)
-        else:
-            non_numbered.append(f)
-    
-    non_numbered.sort()
-    numbered.sort(key=lambda x: int(re.match(r'^(\d+)', os.path.basename(x)).group(1)) if re.match(r'^(\d+)', os.path.basename(x)) else 0)
-    
-    final_list = numbered + non_numbered
-    
-    toc_content = "format: jb-book\nroot: intro\nchapters:\n"
-    for f in final_list:
-        title = os.path.splitext(os.path.basename(f))[0].replace('-', ' ').replace('_', ' ').title()
-        try:
-            with open(f, 'r', encoding='utf-8') as file:
-                for _ in range(10):
-                    line = file.readline()
-                    if line.startswith('# '):
-                        title = line.replace('# ', '').strip()
-                        break
-        except: pass
-        
-        jb_path = os.path.splitext(f)[0].replace('\\', '/')
-        toc_content += f"- file: {jb_path}\n  title: \"{title}\"\n"
-    
-    with open('_toc.yml', 'w', encoding='utf-8') as f:
-        f.write(toc_content)
-
-def build_book():
-    """Menjalankan jupyter-book build secara penuh"""
-    try:
-        # Gunakan --all agar sidebar di SEMUA halaman terupdate saat TOC berubah
-        subprocess.run(["jupyter-book", "build", "--all", "."], check=True)
-        return True
-    except:
-        return False
-
-# --- ROUTES ---
-
-@app.route('/canvas')
-def canvas():
-    if not VENV_EXISTS or not is_local_access():
-        return render_template_string(RESTRICTED_HTML), 403
-    return render_template_string(CANVAS_HTML)
-
-@app.route('/api/files')
-def list_files():
-    if not VENV_EXISTS or not is_local_access(): return jsonify([]), 403
-    return jsonify(get_editable_files())
-
-@app.route('/api/read')
-def read_file():
-    if not VENV_EXISTS or not is_local_access(): return jsonify(success=False), 403
-    path = request.args.get('path')
-    if not path or not os.path.exists(path):
-        return jsonify(success=False, error="File not found")
-    with open(path, 'r', encoding='utf-8') as f:
-        return jsonify(success=True, content=f.read())
-
-@app.route('/api/delete', methods=['POST'])
-def delete_file():
-    if not VENV_EXISTS or not is_local_access(): return jsonify(success=False), 403
-    path = request.json.get('path')
-    if not path or not os.path.exists(path):
-        return jsonify(success=False, error="File not found")
-    try:
-        # 1. Hapus source file (.md atau .ipynb)
-        os.remove(path)
-        
-        # 2. Hapus sisa file HTML di folder _build agar benar-benar hilang
-        html_path = os.path.join('_build', 'html', os.path.splitext(path)[0] + '.html')
-        if os.path.exists(html_path):
-            os.remove(html_path)
-        
-        # 3. Update daftar isi (_toc.yml)
-        update_toc()
-        
-        # 4. Build ulang buku
-        build_book()
-        return jsonify(success=True)
-    except Exception as e:
-        return jsonify(success=False, error=str(e))
-
-@app.route('/save', methods=['POST'])
-def save():
-    if not VENV_EXISTS or not is_local_access(): return jsonify(success=False), 403
-    data = request.json
-    filename = data.get('filename')
-    content = data.get('content')
-    
-    # Check if this is an update to an existing file with a full path
-    is_edit = '/' in filename or '\\' in filename or os.path.exists(filename)
-    
-    if not is_edit:
-        # Automatic Numbering Logic
-        files = get_editable_files()
-        max_num = -1
-        for f in files:
-            match = re.search(r'(\d+)', os.path.basename(f))
-            if match:
-                num = int(match.group(1))
-                if num > max_num: max_num = num
-        
-        # Check if the user already started with a number
-        if not re.match(r'^\d+', filename):
-            next_num = max_num + 1
-            prefix = f"{next_num:02d}_"
-            filename = prefix + filename.replace(' ', '-')
-        
-        if not filename.endswith('.md'): filename += '.md'
-        target_path = os.path.join('md', filename)
-    else:
-        target_path = filename
-
-    os.makedirs(os.path.dirname(target_path) or '.', exist_ok=True)
-    
-    with open(target_path, 'w', encoding='utf-8') as f:
-        f.write(content)
-    
-    update_toc()
-    if build_book():
-        # Karena build selesai, kita berikan redirect ke halaman yang baru/diupdate
-        clean_path = target_path.replace('.md', '').replace('.ipynb', '')
-        page_url = f"/{clean_path}.html"
-        return jsonify(success=True, redirect=page_url, path=target_path)
-    return jsonify(success=False, error="Build failed")
-
-@app.route('/')
-def home():
-    if not os.path.exists(os.path.join(BUILD_DIR, 'index.html')):
-        return redirect(url_for('canvas'))
-    return send_from_directory(BUILD_DIR, 'index.html')
-
-@app.route('/<path:path>')
-def serve_static(path):
-    if os.path.exists(os.path.join(BUILD_DIR, path)):
-        return send_from_directory(BUILD_DIR, path)
-    if os.path.exists(os.path.join(BUILD_DIR, path + '.html')):
-        return send_from_directory(BUILD_DIR, path + '.html')
-    return "File Not Found", 404
-
-# --- UI TEMPLATE ---
+# --- UI TEMPLATES ---
 
 RESTRICTED_HTML = r"""
 <!DOCTYPE html>
@@ -198,19 +34,23 @@ RESTRICTED_HTML = r"""
 <head>
     <title>Access Denied</title>
     <style>
-        body { background: #0d1117; color: #c9d1d9; display: flex; align-items: center; justify-content: center; height: 100vh; font-family: sans-serif; text-align: center; }
-        .box { padding: 40px; border: 1px solid #30363d; border-radius: 12px; background: #161b22; max-width: 400px; }
-        h1 { color: #f85149; }
-        p { line-height: 1.6; }
-        .footer { margin-top: 20px; font-size: 12px; color: #8b949e; }
+        body { background: #0d1117; color: #c9d1d9; display: flex; align-items: center; justify-content: center; height: 100vh; font-family: sans-serif; text-align: center; margin: 0; }
+        .box { padding: 40px; border: 1px solid #30363d; border-radius: 12px; background: #161b22; max-width: 450px; box-shadow: 0 8px 24px rgba(0,0,0,0.5); }
+        h1 { color: #f85149; margin-top: 0; }
+        p { line-height: 1.6; font-size: 1.1rem; }
+        code { background: #0d1117; padding: 2px 6px; border-radius: 4px; color: #58a6ff; }
+        .footer { margin-top: 25px; font-size: 0.9rem; color: #8b949e; border-top: 1px solid #30363d; padding-top: 15px; }
     </style>
 </head>
 <body>
     <div class="box">
         <h1>Akses Dibatasi</h1>
-        <p>Markdown Canvas hanya bisa diakses via <b>Localhost</b> dengan environment <b>VENV</b> aktif.</p>
-        <p>Fitur editor dimatikan untuk versi web publik demi keamanan data.</p>
-        <div class="footer">Silakan jalankan <code>bash run.sh dev</code> di komputer lokal Anda.</div>
+        <p>Fitur <b>Markdown Canvas</b> hanya tersedia dalam mode <b>Development / Offline</b>.</p>
+        <p>Server mendeteksi bahwa VENV tidak ditemukan atau akses berasal dari luar localhost.</p>
+        <div class="footer">
+            Silakan jalankan script berikut di komputer lokal Anda:<br>
+            <code>bash run.sh dev</code>
+        </div>
     </div>
 </body>
 </html>
@@ -355,24 +195,27 @@ CANVAS_HTML = r"""
         }
 
         async function loadFiles() {
-            const res = await fetch('/api/files');
-            if(!res.ok) return;
-            const files = await res.json();
-            fileList.innerHTML = files.map(f => {
-                // Bersihkan nama untuk tampilan: hapus path, hapus angka di depan, hapus ekstensi
-                const displayName = f.split('/').pop()
-                                     .replace(/^\d+_/, '')
-                                     .replace(/\.(md|ipynb)$/, '');
-                
-                return `
-                    <div class="file-item ${f === currentFilePath ? 'active' : ''}" onclick="openFile('${f}')">
-                        <span class="file-name"><i class="far fa-file-alt"></i> ${displayName}</span>
-                        <div class="file-actions">
-                            <i class="fas fa-trash-alt action-btn" onclick="event.stopPropagation(); deleteFile('${f}')"></i>
+            try {
+                const res = await fetch('/api/files');
+                if(!res.ok) throw new Error("Restricted");
+                const files = await res.json();
+                fileList.innerHTML = files.map(f => {
+                    const displayName = f.split('/').pop()
+                                         .replace(/^\d+_/, '')
+                                         .replace(/\.(md|ipynb)$/, '');
+                    
+                    return `
+                        <div class="file-item ${f === currentFilePath ? 'active' : ''}" onclick="openFile('${f}')">
+                            <span class="file-name"><i class="far fa-file-alt"></i> ${displayName}</span>
+                            <div class="file-actions">
+                                <i class="fas fa-trash-alt action-btn" onclick="event.stopPropagation(); deleteFile('${f}')"></i>
+                            </div>
                         </div>
-                    </div>
-                `;
-            }).join('');
+                    `;
+                }).join('');
+            } catch (e) {
+                fileList.innerHTML = '<div style="padding:15px;color:#f85149;font-size:12px;">Access Restricted</div>';
+            }
         }
 
         async function openFile(path) {
@@ -381,7 +224,6 @@ CANVAS_HTML = r"""
             if(data.success) {
                 currentFilePath = path;
                 editor.value = data.content;
-                // Tampilkan nama bersih di input box (tanpa md/, tanpa angka, tanpa ekstensi)
                 filenameInput.value = path.split('/').pop()
                                           .replace(/^\d+_/, '')
                                           .replace(/\.(md|ipynb)$/, '');
@@ -443,6 +285,8 @@ CANVAS_HTML = r"""
             const insertVal = selected || placeholder;
             editor.value = text.substring(0, start) + before + insertVal + after + text.substring(end);
             editor.focus();
+            const newCursor = start + before.length + insertVal.length + after.length;
+            editor.setSelectionRange(newCursor, newCursor);
             updatePreview();
         }
 
@@ -464,12 +308,10 @@ CANVAS_HTML = r"""
                 const data = await res.json();
                 if(data.success) {
                     currentFilePath = data.path;
-                    // Bersihkan input box setelah save
                     filenameInput.value = data.path.split('/').pop()
                                               .replace(/^\d+_/, '')
                                               .replace(/\.(md|ipynb)$/, '');
                     await loadFiles();
-                    // Auto redirect ke halaman hasil build setelah save selesai
                     window.location.href = data.redirect;
                 } else {
                     alert("Error: " + data.error);
@@ -486,12 +328,171 @@ CANVAS_HTML = r"""
 </html>
 """
 
-if __name__ == '__main__':
-    if MODE == "DEVELOPMENT":
-        print("\nDEV SERVER ACTIVE!")
-        print("Book Link: http://127.0.0.1:5000")
-        print("Canvas Link: http://127.0.0.1:5000/canvas\n")
-        app.run(host='0.0.0.0', port=5000, debug=False)
+# --- LOGIC HELPERS ---
+
+def get_editable_files():
+    ignore = ['intro.md', 'README.md', 'requirements.txt', '.nojekyll', 'markdown.md', 'markdown-notebooks.md', 'notebooks.ipynb', '_toc.yml', '_config.yml']
+    files = []
+    # Root
+    for f in glob.glob("*.md") + glob.glob("*.ipynb"):
+        if f not in ignore: files.append(f)
+    # md/
+    md_dir = os.path.join(ROOT_DIR, 'md')
+    if os.path.exists(md_dir):
+        for f in glob.glob(os.path.join(md_dir, "*.md")) + glob.glob(os.path.join(md_dir, "*.ipynb")):
+            if os.path.basename(f) not in ignore:
+                # Store relative path for frontend
+                rel_path = os.path.relpath(f, ROOT_DIR).replace('\\', '/')
+                files.append(rel_path)
+    return sorted(files)
+
+def update_toc():
+    ignore = ['intro.md', 'README.md', 'requirements.txt', '.nojekyll', 'markdown.md', 'markdown-notebooks.md', 'notebooks.ipynb']
+    files = []
+    # Root
+    for f in glob.glob("*.md") + glob.glob("*.ipynb"):
+        if f not in ignore: files.append(f)
+    # md/
+    md_dir = os.path.join(ROOT_DIR, 'md')
+    if os.path.exists(md_dir):
+        for f in glob.glob(os.path.join(md_dir, "*.md")) + glob.glob(os.path.join(md_dir, "*.ipynb")):
+            if os.path.basename(f) not in ignore:
+                files.append(os.path.relpath(f, ROOT_DIR))
+
+    # Sort
+    numbered = []
+    non_numbered = []
+    for f in files:
+        basename = os.path.basename(f)
+        if re.match(r'^\d+', basename): numbered.append(f)
+        else: non_numbered.append(f)
+    
+    non_numbered.sort()
+    numbered.sort(key=lambda x: int(re.match(r'^(\d+)', os.path.basename(x)).group(1)) if re.match(r'^(\d+)', os.path.basename(x)) else 0)
+    final_list = numbered + non_numbered
+    
+    toc_content = "format: jb-book\nroot: intro\nchapters:\n"
+    for f in final_list:
+        real_path = os.path.join(ROOT_DIR, f)
+        title = os.path.splitext(os.path.basename(f))[0].replace('-', ' ').replace('_', ' ').title()
+        try:
+            with open(real_path, 'r', encoding='utf-8') as file:
+                for _ in range(10):
+                    line = file.readline()
+                    if line.startswith('# '):
+                        title = line.replace('# ', '').strip()
+                        break
+        except: pass
+        
+        jb_path = os.path.splitext(f.replace('\\', '/'))[0]
+        toc_content += f"- file: {jb_path}\n  title: \"{title}\"\n"
+    
+    with open(os.path.join(ROOT_DIR, '_toc.yml'), 'w', encoding='utf-8') as f:
+        f.write(toc_content)
+
+def build_book():
+    try:
+        subprocess.run(["jupyter-book", "build", "--all", ROOT_DIR], check=True)
+        return True
+    except: return False
+
+# --- ROUTES ---
+
+@app.route('/canvas')
+def canvas():
+    if not VENV_EXISTS or not is_local_access():
+        return render_template_string(RESTRICTED_HTML), 403
+    return render_template_string(CANVAS_HTML)
+
+@app.route('/api/files')
+def list_files():
+    if not VENV_EXISTS or not is_local_access(): return jsonify([]), 403
+    return jsonify(get_editable_files())
+
+@app.route('/api/read')
+def read_file():
+    if not VENV_EXISTS or not is_local_access(): return jsonify(success=False), 403
+    path = request.args.get('path')
+    abs_path = os.path.join(ROOT_DIR, path)
+    if not path or not os.path.exists(abs_path):
+        return jsonify(success=False, error="File not found")
+    with open(abs_path, 'r', encoding='utf-8') as f:
+        return jsonify(success=True, content=f.read())
+
+@app.route('/api/delete', methods=['POST'])
+def delete_file():
+    if not VENV_EXISTS or not is_local_access(): return jsonify(success=False), 403
+    path = request.json.get('path')
+    abs_path = os.path.join(ROOT_DIR, path)
+    if not path or not os.path.exists(abs_path):
+        return jsonify(success=False, error="File not found")
+    try:
+        os.remove(abs_path)
+        # Cleanup HTML build
+        html_path = os.path.join(BUILD_DIR, os.path.splitext(path)[0] + '.html')
+        if os.path.exists(html_path): os.remove(html_path)
+        update_toc()
+        build_book()
+        return jsonify(success=True)
+    except Exception as e: return jsonify(success=False, error=str(e))
+
+@app.route('/save', methods=['POST'])
+def save():
+    if not VENV_EXISTS or not is_local_access(): return jsonify(success=False), 403
+    data = request.json
+    filename = data.get('filename')
+    content = data.get('content')
+    
+    # Is it an existing relative path or a new filename?
+    if '/' in filename or os.path.exists(os.path.join(ROOT_DIR, filename)):
+        target_path = os.path.join(ROOT_DIR, filename)
     else:
-        print("Production Mode Active.")
-        app.run(host='0.0.0.0', port=5000, debug=False)
+        # New file auto-numbering
+        files = get_editable_files()
+        max_num = -1
+        for f in files:
+            match = re.search(r'(\d+)', os.path.basename(f))
+            if match:
+                num = int(match.group(1)); max_num = max(max_num, num)
+        
+        if not re.match(r'^\d+', filename):
+            filename = f"{(max_num + 1):02d}_" + filename.replace(' ', '-')
+        
+        if not filename.endswith('.md'): filename += '.md'
+        target_path = os.path.join(ROOT_DIR, 'md', filename)
+
+    os.makedirs(os.path.dirname(target_path), exist_ok=True)
+    with open(target_path, 'w', encoding='utf-8') as f:
+        f.write(content)
+    
+    update_toc()
+    if build_book():
+        rel_path = os.path.relpath(target_path, ROOT_DIR).replace('\\', '/')
+        clean_path = os.path.splitext(rel_path)[0]
+        return jsonify(success=True, redirect=f"/{clean_path}.html", path=rel_path)
+    return jsonify(success=False, error="Build failed")
+
+@app.route('/')
+def home():
+    idx = os.path.join(BUILD_DIR, 'index.html')
+    if not os.path.exists(idx): return redirect(url_for('canvas'))
+    return send_from_directory(BUILD_DIR, 'index.html')
+
+@app.route('/<path:path>')
+def serve_static(path):
+    if os.path.exists(os.path.join(BUILD_DIR, path)):
+        return send_from_directory(BUILD_DIR, path)
+    if os.path.exists(os.path.join(BUILD_DIR, path + '.html')):
+        return send_from_directory(BUILD_DIR, path + '.html')
+    return "File Not Found", 404
+
+if __name__ == '__main__':
+    host = '0.0.0.0'
+    port = 5000
+    if MODE == "DEVELOPMENT":
+        print(f"\nDEV SERVER ACTIVE")
+        print(f"Book: http://localhost:{port}")
+        print(f"Canvas: http://localhost:{port}/canvas\n")
+    else:
+        print(f"\nPRODUCTION MODE (Access Restricted)")
+    app.run(host=host, port=port, debug=False)

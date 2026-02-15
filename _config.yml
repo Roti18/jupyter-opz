@@ -30,6 +30,6 @@ repository:
 # See https://jupyterbook.org/customize/config.html#add-a-link-to-your-repository
 html:
   extra_navbar: |
-    <hr><a href="http://127.0.0.1:5000" target="_blank" style="color: #00d2ff; font-weight: bold;">🛠️ Dev Tool: Insert MD</a>
+    <hr><a href="http://127.0.0.1:5000" target="_blank" style="color: #00d2ff; font-weight: bold;">Dev Tool: Insert MD</a>
   use_issues_button: true
   use_repository_button: true
