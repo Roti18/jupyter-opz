@@ -1,16 +1,37 @@
-# Virtual Environment
+# --- Python & Environment ---
 venv/
 .venv/
 env/
-
-# Jupyter Book build folder
-_build/
-
-# Python cache
+.env
 __pycache__/
 *.py[cod]
 *$py.class
+*.so
+.python-version
 
-# OS Files
+# --- Jupyter Book & Build ---
+_build/
+
+# --- Project Specific ---
+Pendat/
+.ipynb_checkpoints/
+.jupyter/
+*.log
+
+# --- IDE & Editors ---
+.vscode/
+.idea/
+*.swp
+*.swo
+.project
+.pydevproject
+.settings/
+
+# --- OS Specific ---
 .DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
 Thumbs.db
