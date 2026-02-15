@@ -21,7 +21,7 @@ Setelah mode diatur ke `DEVELOPMENT`, jalankan script berikut untuk membuka anta
 *   **Linux/macOS:** `./dev.sh`
 *   **Windows:** `dev.bat`
 
-Server akan berjalan di [http://127.0.0.1:5000](http://127.0.0.1:5000).
+Server akan berjalan di `http://localhost:5000` (hanya bisa diakses di komputer lokal).
 
 ## 3. Menggunakan Markdown Canvas
 Di dalam antarmuka web yang muncul, Anda dapat:

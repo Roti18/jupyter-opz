@@ -4,6 +4,6 @@
 ### Cara Cepat (Rekomendasi)
 Daripada bikin file manual, kamu bisa pakai **Markdown Canvas** buat paste materi langsung dari browser:
 
-<a href="http://127.0.0.1:5000/canvas" style="display: inline-block; background: #61afef; color: #282c34; padding: 10px 20px; border-radius: 6px; text-decoration: none; font-weight: bold; border: none; cursor: pointer;">Mulai Menulis di Canvas</a>
+<a href="../canvas.html" style="display: inline-block; background: #61afef; color: #282c34; padding: 10px 20px; border-radius: 6px; text-decoration: none; font-weight: bold; border: none; cursor: pointer;">Mulai Menulis di Canvas</a>
 
 *Catatan: Fitur ini hanya tersedia jika kamu menjalankan `dev.sh` atau `dev.bat`.*
