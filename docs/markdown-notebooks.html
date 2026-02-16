@@ -8,7 +8,7 @@
     <meta charset="utf-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" /><meta name="viewport" content="width=device-width, initial-scale=1" />
 
-    <title>Jupyter Optimization &#8212; Roti18</title>
+    <title>Notebooks with MyST Markdown &#8212; My sample book</title>
   
   
   
@@ -32,7 +32,7 @@
     <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=eba8b062" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
   
@@ -57,9 +57,10 @@
     <script async="async" src="_static/sphinx-thebe.js?v=c100c467"></script>
     <script>var togglebuttonSelector = '.toggle, .admonition.dropdown';</script>
     <script>const THEBE_JS_URL = "https://unpkg.com/thebe@0.8.2/lib/index.js"; const thebe_selector = ".thebe,.cell"; const thebe_selector_input = "pre"; const thebe_selector_output = ".output, .cell_output"</script>
-    <script>DOCUMENTATION_OPTIONS.pagename = 'README';</script>
+    <script>DOCUMENTATION_OPTIONS.pagename = 'markdown-notebooks';</script>
     <link rel="index" title="Index" href="genindex.html" />
     <link rel="search" title="Search" href="search.html" />
+    <link rel="prev" title="Content with notebooks" href="notebooks.html" />
   <meta name="viewport" content="width=device-width, initial-scale=1"/>
   <meta name="docsearch:language" content="en"/>
   </head>
@@ -122,8 +123,6 @@
       
       
       
-        
-      
       <div class="bd-sidebar-primary bd-sidebar">
         
 
@@ -153,8 +152,8 @@
       
     
     
-    <img src="_static/logo.png" class="logo__image only-light" alt="Roti18 - Home"/>
-    <script>document.write(`<img src="_static/logo.png" class="logo__image only-dark" alt="Roti18 - Home"/>`);</script>
+    <img src="_static/logo.png" class="logo__image only-light" alt="My sample book - Home"/>
+    <script>document.write(`<img src="_static/logo.png" class="logo__image only-dark" alt="My sample book - Home"/>`);</script>
   
   
 </a></div>
@@ -179,9 +178,10 @@
                 </a>
             </li>
         </ul>
-        <ul class="nav bd-sidenav">
-<li class="toctree-l1"><a class="reference internal" href="md/00_panduan-dev.html">Panduan Pengembangan (Dev Mode)</a></li>
-<li class="toctree-l1"><a class="reference internal" href="md/01_mulai-disini.html">Mulai Menulis</a></li>
+        <ul class="current nav bd-sidenav">
+<li class="toctree-l1"><a class="reference internal" href="markdown.html">Markdown Files</a></li>
+<li class="toctree-l1"><a class="reference internal" href="notebooks.html">Content with notebooks</a></li>
+<li class="toctree-l1 current active"><a class="current reference internal" href="#">Notebooks with MyST Markdown</a></li>
 </ul>
 
     </div>
@@ -236,7 +236,7 @@
       
       
       
-      <li><a href="https://github.com/Roti18/jupyter-opz" target="_blank"
+      <li><a href="https://github.com/executablebooks/jupyter-book" target="_blank"
    class="btn btn-sm btn-source-repository-button dropdown-item"
    title="Source repository"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -253,7 +253,7 @@
       
       
       
-      <li><a href="https://github.com/Roti18/jupyter-opz/issues/new?title=Issue%20on%20page%20%2FREADME.html&body=Your%20issue%20content%20here." target="_blank"
+      <li><a href="https://github.com/executablebooks/jupyter-book/issues/new?title=Issue%20on%20page%20%2Fmarkdown-notebooks.html&body=Your%20issue%20content%20here." target="_blank"
    class="btn btn-sm btn-source-issues-button dropdown-item"
    title="Open an issue"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -283,7 +283,7 @@
       
       
       
-      <li><a href="_sources/README.md" target="_blank"
+      <li><a href="_sources/markdown-notebooks.md" target="_blank"
    class="btn btn-sm btn-download-source-button dropdown-item"
    title="Download source file"
    data-bs-placement="left" data-bs-toggle="tooltip"
@@ -367,7 +367,7 @@ document.write(`
               
 
 <div id="jb-print-docs-body" class="onlyprint">
-    <h1>Jupyter Optimization</h1>
+    <h1>Notebooks with MyST Markdown</h1>
     <!-- Table of contents -->
     <div id="print-main-content">
         <div id="jb-print-toc">
@@ -377,16 +377,9 @@ document.write(`
             </div>
             <nav aria-label="Page">
                 <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quick-start-master-script">Quick Start (Master Script)</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#installation-setup">1. Installation &amp; Setup</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#development-mode-markdown-canvas">2. Development Mode (Markdown Canvas)</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#build-publish">3. Build &amp; Publish</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reset-project">4. Reset Project</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#writing-content">Writing Content</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deployment-github-pages">Deployment (GitHub Pages)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#project-structure">Project Structure</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#an-example-cell">An example cell</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#create-a-notebook-with-myst-markdown">Create a notebook with MyST Markdown</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quickly-add-yaml-metadata-for-myst-notebooks">Quickly add YAML metadata for MyST Notebooks</a></li>
 </ul>
             </nav>
         </div>
@@ -398,81 +391,50 @@ document.write(`
 <div id="searchbox"></div>
                 <article class="bd-article">
                   
-  <section class="tex2jax_ignore mathjax_ignore" id="jupyter-optimization">
-<h1>Jupyter Optimization<a class="headerlink" href="#jupyter-optimization" title="Link to this heading">#</a></h1>
-<p>Streamlined Jupyter Book (v1.0.3) environment with an integrated Markdown Canvas editor for rapid content creation.</p>
-<section id="quick-start-master-script">
-<h2>Quick Start (Master Script)<a class="headerlink" href="#quick-start-master-script" title="Link to this heading">#</a></h2>
-<p>All operations are managed through the master script <a class="reference external" href="http://run.sh">run.sh</a> (Linux/macOS) or run.bat (Windows).</p>
-<section id="installation-setup">
-<h3>1. Installation &amp; Setup<a class="headerlink" href="#installation-setup" title="Link to this heading">#</a></h3>
-<p>Initialize the virtual environment, install dependencies, and perform the initial build.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Linux/macOS</span>
-bash<span class="w"> </span>run.sh<span class="w"> </span>install
-
-<span class="c1"># Windows</span>
-run.bat<span class="w"> </span>install
+  <section class="tex2jax_ignore mathjax_ignore" id="notebooks-with-myst-markdown">
+<h1>Notebooks with MyST Markdown<a class="headerlink" href="#notebooks-with-myst-markdown" title="Link to this heading">#</a></h1>
+<p>Jupyter Book also lets you write text-based notebooks using MyST Markdown.
+See <a class="reference external" href="https://jupyterbook.org/file-types/myst-notebooks.html">the Notebooks with MyST Markdown documentation</a> for more detailed instructions.
+This page shows off a notebook written in MyST Markdown.</p>
+<section id="an-example-cell">
+<h2>An example cell<a class="headerlink" href="#an-example-cell" title="Link to this heading">#</a></h2>
+<p>With MyST Markdown, you can define code cells with a directive like so:</p>
+<div class="cell docutils container">
+<div class="cell_input docutils container">
+<div class="highlight-ipython3 notranslate"><div class="highlight"><pre><span></span><span class="nb">print</span><span class="p">(</span><span class="mi">2</span> <span class="o">+</span> <span class="mi">2</span><span class="p">)</span>
 </pre></div>
 </div>
-</section>
-<section id="development-mode-markdown-canvas">
-<h3>2. Development Mode (Markdown Canvas)<a class="headerlink" href="#development-mode-markdown-canvas" title="Link to this heading">#</a></h3>
-<p>Start the local server to access the Markdown Canvas editor. This command automatically activates the Canvas feature.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Linux/macOS</span>
-bash<span class="w"> </span>run.sh<span class="w"> </span>dev
-
-<span class="c1"># Windows</span>
-run.bat<span class="w"> </span>dev
+</div>
+<div class="cell_output docutils container">
+<div class="output stream highlight-myst-ansi notranslate"><div class="highlight"><pre><span></span>4
 </pre></div>
 </div>
-<ul class="simple">
-<li><p>Book Link: <a class="reference external" href="http://127.0.0.1:5000">http://127.0.0.1:5000</a></p></li>
-<li><p>Canvas Link: <a class="reference external" href="http://127.0.0.1:5000/canvas">http://127.0.0.1:5000/canvas</a></p></li>
-</ul>
-</section>
-<section id="build-publish">
-<h3>3. Build &amp; Publish<a class="headerlink" href="#build-publish" title="Link to this heading">#</a></h3>
-<p>Update the Table of Contents and build the static HTML for deployment.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>bash<span class="w"> </span>run.sh<span class="w"> </span>publish
-</pre></div>
+</div>
+</div>
+<p>When your book is built, the contents of any <code class="docutils literal notranslate"><span class="pre">{code-cell}</span></code> blocks will be
+executed with your default Jupyter kernel, and their outputs will be displayed
+in-line with the rest of your content.</p>
+<div class="admonition seealso">
+<p class="admonition-title">See also</p>
+<p>Jupyter Book uses <a class="reference external" href="https://jupytext.readthedocs.io/en/latest/">Jupytext</a> to convert text-based files to notebooks, and can support <a class="reference external" href="https://jupyterbook.org/file-types/jupytext.html">many other text-based notebook files</a>.</p>
 </div>
 </section>
-<section id="reset-project">
-<h3>4. Reset Project<a class="headerlink" href="#reset-project" title="Link to this heading">#</a></h3>
-<p>Wipe all build artifacts, virtual environments, and temporary files.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>bash<span class="w"> </span>run.sh<span class="w"> </span>reset
-</pre></div>
-</div>
-</section>
-</section>
-<hr class="docutils" />
-<section id="writing-content">
-<h2>Writing Content<a class="headerlink" href="#writing-content" title="Link to this heading">#</a></h2>
-<ul class="simple">
-<li><p>File Naming: Use 0x_name.md format (e.g., 01_introduction.md).</p></li>
-<li><p><strong>Auto-Numbering Queue</strong>: In Canvas Mode, you can just type the name (e.g., <code class="docutils literal notranslate"><span class="pre">my-topic</span></code>) and the system will automatically prefix it with the next available number (e.g., <code class="docutils literal notranslate"><span class="pre">03_my-topic.md</span></code>).</p></li>
-<li><p>H1 Titles: Every file must start with an H1 title (# Title).</p></li>
-<li><p>Location: Put source files in the md/ directory.</p></li>
-</ul>
-</section>
-<hr class="docutils" />
-<section id="deployment-github-pages">
-<h2>Deployment (GitHub Pages)<a class="headerlink" href="#deployment-github-pages" title="Link to this heading">#</a></h2>
+<section id="create-a-notebook-with-myst-markdown">
+<h2>Create a notebook with MyST Markdown<a class="headerlink" href="#create-a-notebook-with-myst-markdown" title="Link to this heading">#</a></h2>
+<p>MyST Markdown notebooks are defined by two things:</p>
 <ol class="arabic simple">
-<li><p>Build the book: <code class="docutils literal notranslate"><span class="pre">bash</span> <span class="pre">run.sh</span> <span class="pre">publish</span></code></p></li>
-<li><p>Push everything to GitHub.</p></li>
-<li><p>In GitHub Settings &gt; Pages, set Branch to <code class="docutils literal notranslate"><span class="pre">main</span></code> and Folder to <code class="docutils literal notranslate"><span class="pre">/docs</span></code>.</p></li>
+<li><p>YAML metadata that is needed to understand if / how it should convert text files to notebooks (including information about the kernel needed).
+See the YAML at the top of this page for example.</p></li>
+<li><p>The presence of <code class="docutils literal notranslate"><span class="pre">{code-cell}</span></code> directives, which will be executed with your book.</p></li>
 </ol>
+<p>That’s all that is needed to get started!</p>
 </section>
-<hr class="docutils" />
-<section id="project-structure">
-<h2>Project Structure<a class="headerlink" href="#project-structure" title="Link to this heading">#</a></h2>
-<ul class="simple">
-<li><p>md/: Markdown source files.</p></li>
-<li><p>docs/: static HTML (for web).</p></li>
-<li><p>scripts/: System logic.</p></li>
-<li><p><a class="reference external" href="http://run.sh">run.sh</a> / run.bat: Master commands.</p></li>
-</ul>
+<section id="quickly-add-yaml-metadata-for-myst-notebooks">
+<h2>Quickly add YAML metadata for MyST Notebooks<a class="headerlink" href="#quickly-add-yaml-metadata-for-myst-notebooks" title="Link to this heading">#</a></h2>
+<p>If you have a markdown file and you’d like to quickly add YAML metadata to it, so that Jupyter Book will treat it as a MyST Markdown Notebook, run the following command:</p>
+<div class="highlight-default notranslate"><div class="highlight"><pre><span></span><span class="n">jupyter</span><span class="o">-</span><span class="n">book</span> <span class="n">myst</span> <span class="n">init</span> <span class="n">path</span><span class="o">/</span><span class="n">to</span><span class="o">/</span><span class="n">markdownfile</span><span class="o">.</span><span class="n">md</span>
+</pre></div>
+</div>
 </section>
 </section>
 
@@ -506,6 +468,15 @@ run.bat<span class="w"> </span>dev
                 <footer class="prev-next-footer d-print-none">
                   
 <div class="prev-next-area">
+    <a class="left-prev"
+       href="notebooks.html"
+       title="previous page">
+      <i class="fa-solid fa-angle-left"></i>
+      <div class="prev-next-info">
+        <p class="prev-next-subtitle">previous</p>
+        <p class="prev-next-title">Content with notebooks</p>
+      </div>
+    </a>
 </div>
                 </footer>
               
@@ -522,16 +493,9 @@ run.bat<span class="w"> </span>dev
   </div>
   <nav class="bd-toc-nav page-toc">
     <ul class="visible nav section-nav flex-column">
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quick-start-master-script">Quick Start (Master Script)</a><ul class="nav section-nav flex-column">
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#installation-setup">1. Installation &amp; Setup</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#development-mode-markdown-canvas">2. Development Mode (Markdown Canvas)</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#build-publish">3. Build &amp; Publish</a></li>
-<li class="toc-h3 nav-item toc-entry"><a class="reference internal nav-link" href="#reset-project">4. Reset Project</a></li>
-</ul>
-</li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#writing-content">Writing Content</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#deployment-github-pages">Deployment (GitHub Pages)</a></li>
-<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#project-structure">Project Structure</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#an-example-cell">An example cell</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#create-a-notebook-with-myst-markdown">Create a notebook with MyST Markdown</a></li>
+<li class="toc-h2 nav-item toc-entry"><a class="reference internal nav-link" href="#quickly-add-yaml-metadata-for-myst-notebooks">Quickly add YAML metadata for MyST Notebooks</a></li>
 </ul>
   </nav></div>
 
@@ -546,7 +510,7 @@ run.bat<span class="w"> </span>dev
   <div class="footer-item">
     
 <p class="component-author">
-By Roti18
+By The Jupyter Book Community
 </p>
 
   </div>
@@ -556,7 +520,7 @@ By Roti18
 
   <p class="copyright">
     
-      © Copyright 2026.
+      © Copyright 2023.
       <br/>
     
   </p>

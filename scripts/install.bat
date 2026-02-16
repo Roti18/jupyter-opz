@@ -1,5 +1,5 @@
 @echo off
-setlocal
+setlocal enabledelayedexpansion
 echo ==========================================
 echo    Installing Jupyter Book 1.0.3 (VENV)
 echo ==========================================
@@ -50,9 +50,9 @@ set /p AUTHOR_NAME="Enter Author Name (Default: Roti18): "
 if "%AUTHOR_NAME%"=="" set AUTHOR_NAME=Roti18
 
 set /p REPO_URL="Enter GitHub Repository URL (e.g. https://github.com/roti18/jupyter-opz): "
-if "%REPO_URL%"=="" (
+if "!REPO_URL!"=="" (
     for %%I in (.) do set REPO_NAME=%%~nxI
-    set REPO_URL=https://github.com/Roti18/%REPO_NAME%
+    set REPO_URL=https://github.com/Roti18/!REPO_NAME!
 )
 
 :: Get Current Year
@@ -61,10 +61,10 @@ set CURRENT_YEAR=%dt:~0,4%
 
 :: Update _config.yml
 if exist _config.yml (
-    powershell -Command "$c = Get-Content _config.yml; $c = $c -replace '^author: .*', 'author: \"%AUTHOR_NAME%\"'; $c = $c -replace '^  url: .*', '  url: %REPO_URL%'; $c = $c -replace '^  branch: .*', '  branch: main'; if ($c -match '^copyright:') { $c = $c -replace '^copyright: .*', 'copyright: \"%CURRENT_YEAR%\"' } else { $c = $c -replace '^author: .*', \"author: `\"%AUTHOR_NAME%`\"`ncopyright: `\"%CURRENT_YEAR%`\"\" }; Set-Content _config.yml $c"
+    powershell -Command "$c = Get-Content _config.yml; $c = $c -replace '^author: .*', 'author: \"%AUTHOR_NAME%\"'; $c = $c -replace '^  url: .*', '  url: !REPO_URL!'; $c = $c -replace '^  branch: .*', '  branch: main'; if ($c -match '^copyright:') { $c = $c -replace '^copyright: .*', 'copyright: \"%CURRENT_YEAR%\"' } else { $c = $c -replace '^author: .*', \"author: `\"%AUTHOR_NAME%`\"`ncopyright: `\"%CURRENT_YEAR%`\"\" }; Set-Content _config.yml $c"
 )
 echo [SUCCESS] Identity updated: %AUTHOR_NAME% ^| %CURRENT_YEAR%
-echo [SUCCESS] Repository set to: %REPO_URL%
+echo [SUCCESS] Repository set to: !REPO_URL!
 
 call scripts\publish.bat
 

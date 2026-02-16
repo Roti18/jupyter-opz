@@ -1,7 +1,7 @@
 format: jb-book
 root: intro
 chapters:
-- file: md/00_panduan-dev.md
+- file: md/00_panduan-dev
   title: "Panduan Pengembangan (Dev Mode)"
-- file: md/01_mulai-disini.md
+- file: md/01_mulai-disini
   title: "Mulai Menulis"

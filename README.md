@@ -28,6 +28,9 @@ run.bat dev
 - Book Link: http://127.0.0.1:5000
 - Canvas Link: http://127.0.0.1:5000/canvas
 
+> [!IMPORTANT]
+> **Windows Users**: If a "Windows Firewall" or "Network" notification appears when running `run.bat dev`, please select **"Allow Access"** for Python to ensure the dev server can run correctly.
+
 ### 3. Build & Publish
 Update the Table of Contents and build the static HTML for deployment.
 ```bash
