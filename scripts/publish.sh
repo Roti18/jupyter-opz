@@ -12,12 +12,13 @@ else
     exit 1
 fi
 
-echo "[1/4] Auto-Generating Table of Contents (_toc.yml)..."
+echo "[1/4] Cleaning & Generating Table of Contents (_toc.yml)..."
 IGNORE="README.md requirements.txt .nojekyll markdown.md markdown-notebooks.md notebooks.ipynb"
-rm -f intro.md
+rm -rf _build docs
+mkdir docs
 
 echo "format: jb-book" > _toc.yml
-echo "root: md/intro" >> _toc.yml
+echo "root: intro" >> _toc.yml
 echo "chapters:" >> _toc.yml
 
 # Function to get title from H1 or filename

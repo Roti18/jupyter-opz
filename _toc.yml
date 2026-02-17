@@ -1,5 +1,5 @@
-format: jb-book
-root: md/intro
+﻿format: jb-book
+root: intro
 chapters:
 - file: md/00_panduan-dev
   title: "Panduan Pengembangan (Dev Mode)"

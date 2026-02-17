@@ -335,9 +335,9 @@ def get_editable_files():
     blacklist = ['README.md', 'requirements.txt', '.nojekyll', '_toc.yml', '_config.yml', 'run.bat', 'run.sh']
     files = []
     
-    # Root: only add .md files that aren't blacklisted and aren't 'intro.md'
+    # Root: allow intro.md to be edited
     for f in glob.glob("*.md"):
-        if f not in blacklist and f != 'intro.md':
+        if f not in blacklist:
             files.append(f)
             
     # md/ folder: add everything .md/.ipynb
@@ -354,7 +354,7 @@ def update_toc():
     files = []
     # Root
     for f in glob.glob("*.md") + glob.glob("*.ipynb"):
-        if f not in ignore and f != 'intro.md': 
+        if f not in ignore: 
             files.append(f)
     # md/
     md_dir = os.path.join(ROOT_DIR, 'md')
@@ -375,7 +375,7 @@ def update_toc():
     numbered.sort(key=lambda x: int(re.match(r'^(\d+)', os.path.basename(x)).group(1)) if re.match(r'^(\d+)', os.path.basename(x)) else 0)
     final_list = numbered + non_numbered
     
-    toc_content = "format: jb-book\nroot: md/intro\nchapters:\n"
+    toc_content = "format: jb-book\nroot: intro\nchapters:\n"
     for f in final_list:
         # Skip root file from chapters list
         if f.replace('\\', '/') == 'md/intro.md' or f.replace('\\', '/') == 'intro.md':
