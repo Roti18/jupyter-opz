@@ -331,27 +331,31 @@ CANVAS_HTML = r"""
 # --- LOGIC HELPERS ---
 
 def get_editable_files():
-    ignore = ['README.md', 'requirements.txt', '.nojekyll', 'markdown.md', 'markdown-notebooks.md', 'notebooks.ipynb', '_toc.yml', '_config.yml', 'intro.md']
+    # Files that should NEVER be seen/edited
+    blacklist = ['README.md', 'requirements.txt', '.nojekyll', '_toc.yml', '_config.yml', 'run.bat', 'run.sh']
     files = []
-    # Root
-    for f in glob.glob("*.md") + glob.glob("*.ipynb"):
-        if f not in ignore: files.append(f)
-    # md/
+    
+    # Root: only add .md files that aren't blacklisted and aren't 'intro.md'
+    for f in glob.glob("*.md"):
+        if f not in blacklist and f != 'intro.md':
+            files.append(f)
+            
+    # md/ folder: add everything .md/.ipynb
     md_dir = os.path.join(ROOT_DIR, 'md')
     if os.path.exists(md_dir):
         for f in glob.glob(os.path.join(md_dir, "*.md")) + glob.glob(os.path.join(md_dir, "*.ipynb")):
-            if os.path.basename(f) not in ignore:
-                # Store relative path for frontend
-                rel_path = os.path.relpath(f, ROOT_DIR).replace('\\', '/')
-                files.append(rel_path)
-    return sorted(files)
+            rel_path = os.path.relpath(f, ROOT_DIR).replace('\\', '/')
+            files.append(rel_path)
+            
+    return sorted(list(set(files)))
 
 def update_toc():
-    ignore = ['README.md', 'requirements.txt', '.nojekyll', 'markdown.md', 'markdown-notebooks.md', 'notebooks.ipynb', 'intro.md']
+    ignore = ['README.md', 'requirements.txt', '.nojekyll', 'markdown.md', 'markdown-notebooks.md', 'notebooks.ipynb']
     files = []
     # Root
     for f in glob.glob("*.md") + glob.glob("*.ipynb"):
-        if f not in ignore: files.append(f)
+        if f not in ignore and f != 'intro.md': 
+            files.append(f)
     # md/
     md_dir = os.path.join(ROOT_DIR, 'md')
     if os.path.exists(md_dir):
@@ -396,9 +400,17 @@ def update_toc():
 
 def build_book():
     try:
-        subprocess.run(["jupyter-book", "build", "--all", ROOT_DIR], check=True)
+        # Hard cleanup of build folder to prevent cache issues
+        if os.path.exists(os.path.join(ROOT_DIR, '_build')):
+            shutil.rmtree(os.path.join(ROOT_DIR, '_build'), ignore_errors=True)
+            
+        jb_bin = os.path.join(ROOT_DIR, 'venv', 'Scripts', 'jupyter-book.exe') if os.name == 'nt' else os.path.join(ROOT_DIR, 'venv', 'bin', 'jupyter-book')
+        cmd = [jb_bin if os.path.exists(jb_bin) else "jupyter-book", "build", "--all", ROOT_DIR]
+        subprocess.run(cmd, check=True)
         return True
-    except: return False
+    except Exception as e:
+        print(f"Build failed: {e}")
+        return False
 
 # --- ROUTES ---
 

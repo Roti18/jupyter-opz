@@ -55,7 +55,7 @@ for f in $(find . -maxdepth 2 -name "*.md" -o -name "*.ipynb" | grep -vE "venv|_
 done
 
 echo "[2/4] Building Jupyter Book..."
-jupyter-book build .
+jupyter-book build --all .
 
 echo "[3/4] Preparing /docs folder..."
 rm -rf docs
