@@ -37,13 +37,33 @@ Update the Table of Contents and build the static HTML for deployment.
 bash run.sh publish
 ```
 
-### 4. Reset Project
+### 4. Configuration (Identify Yourself)
+Update your name, copyright year, and GitHub repository URL in `_config.yml`.
+```bash
+# Windows
+.\run.bat config
+
+# Linux/macOS
+bash run.sh config
+```
+
+### 5. Reset Project
 Wipe all build artifacts, virtual environments, and temporary files.
 ```bash
-./run.sh reset
+# Windows
+.\run.bat reset
+
+# Linux/macOS
+bash run.sh reset
 ```
 
 ---
+
+## Zero-Config System
+This project uses a **zero-config** approach. 
+- **No .env file**: Environment variables are no longer used.
+- **Auto-TOC**: The `_toc.yml` is automatically generated from H1 headings in your Markdown files.
+- **Auto-Identity**: Identity settings are updated via the `config` command.
 
 ## Writing Content
 

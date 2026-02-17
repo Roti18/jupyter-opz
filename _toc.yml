@@ -2,6 +2,6 @@
 root: intro
 chapters:
 - file: md/00_panduan-dev
-  title: "Panduan Pengembangan (Dev Mode)"
+  title: "Panduan Pengembangan"
 - file: md/01_mulai-disini
   title: "Mulai Menulis"
