@@ -23,7 +23,7 @@ bibtex_bibfiles:
 # Information about where the book exists on the web
 repository:
   url: https://github.com/Roti18/jupyter-opz
-  path_to_book: docs  # Optional path to your book, relative to the repository root
+  path_to_book: ""  # The book source is in the root
   branch: main
 
 # Add GitHub buttons to your book
@@ -31,15 +31,6 @@ repository:
 html:
   use_issues_button: true
   use_repository_button: true
-
-
-# Pattern to exclude from the build
-exclude_patterns: ["_build", "docs", "venv", "scripts", "run.bat", "run.sh", "README.md"]
-
-
-# Pattern to exclude from the build
-exclude_patterns: ["_build", "docs", "venv", "scripts", "run.bat", "run.sh", "README.md"]
-
 
 # Pattern to exclude from the build
 exclude_patterns: ["_build", "docs", "venv", "scripts", "run.bat", "run.sh", "README.md"]
