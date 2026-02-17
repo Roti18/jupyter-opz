@@ -10,7 +10,7 @@ All operations are managed through the master script run.sh (Linux/macOS) or run
 Initialize the virtual environment, install dependencies, and perform the initial build.
 ```bash
 # Linux/macOS
-./run.sh install
+bash run.sh install
 
 # Windows
 .\run.bat install
@@ -20,7 +20,7 @@ Initialize the virtual environment, install dependencies, and perform the initia
 Start the local server to access the Markdown Canvas editor. This command automatically activates the Canvas feature.
 ```bash
 # Linux/macOS
-./run.sh dev
+bash run.sh dev
 
 # Windows
 .\run.bat dev
@@ -34,7 +34,7 @@ Start the local server to access the Markdown Canvas editor. This command automa
 ### 3. Build & Publish
 Update the Table of Contents and build the static HTML for deployment.
 ```bash
-./run.sh publish
+bash run.sh publish
 ```
 
 ### 4. Reset Project
