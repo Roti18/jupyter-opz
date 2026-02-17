@@ -18,8 +18,8 @@ MODE=DEVELOPMENT
 ## 2. Menjalankan Dev Server
 Setelah mode diatur ke `DEVELOPMENT`, jalankan script berikut untuk membuka antarmuka penulisan:
 
-*   **Linux/macOS:** `./dev.sh`
-*   **Windows:** `dev.bat`
+*   **Linux/macOS:** `./run.sh dev`
+*   **Windows:** `.\run.bat dev`
 
 Server akan berjalan di `http://localhost:5000` (hanya bisa diakses di komputer lokal).
 

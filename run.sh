@@ -7,7 +7,7 @@ show_usage() {
     echo "=========================================="
     echo "         Jupyter-OPZ Master Tool"
     echo "=========================================="
-    echo "Usage: bash run.sh [command]"
+    echo "Usage: ./run.sh [command]"
     echo ""
     echo "Commands:"
     echo "  install   : Setup environment and build book"

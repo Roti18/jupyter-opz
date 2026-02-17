@@ -49,7 +49,7 @@ RESTRICTED_HTML = r"""
         <p>Server mendeteksi bahwa VENV tidak ditemukan atau akses berasal dari luar localhost.</p>
         <div class="footer">
             Silakan jalankan script berikut di komputer lokal Anda:<br>
-            <code>bash run.sh dev</code>
+            <code>./run.sh dev</code>
         </div>
     </div>
 </body>

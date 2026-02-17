@@ -38,7 +38,7 @@ if "%CMD%"=="reset" (
 echo ==========================================
 echo          Jupyter-OPZ Master Tool
 echo ==========================================
-echo Usage: run.bat [command]
+echo Usage: .\run.bat [command]
 echo.
 echo Commands:
 echo   install   : Setup environment and build book

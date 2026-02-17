@@ -32,7 +32,7 @@
     <link rel="stylesheet" type="text/css" href="_static/styles/sphinx-book-theme.css?v=eba8b062" />
     <link rel="stylesheet" type="text/css" href="_static/togglebutton.css?v=9c3e77be" />
     <link rel="stylesheet" type="text/css" href="_static/copybutton.css?v=76b2166b" />
-    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css" />
+    <link rel="stylesheet" type="text/css" href="_static/mystnb.8ecb98da25f57f5357bf6f572d296f466b2cfe2517ffebfabe82451661e28f02.css?v=6644e6bb" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-thebe.css?v=4fa983c6" />
     <link rel="stylesheet" type="text/css" href="_static/sphinx-design.min.css?v=95c83b7e" />
   
@@ -175,7 +175,7 @@
         <ul class="nav bd-sidenav bd-sidenav__home-link">
             <li class="toctree-l1">
                 <a class="reference internal" href="md/intro.html">
-                    Penambangan Data
+                    Welcome to your Jupyter Book
                 </a>
             </li>
         </ul>
@@ -408,10 +408,10 @@ document.write(`
 <h3>1. Installation &amp; Setup<a class="headerlink" href="#installation-setup" title="Link to this heading">#</a></h3>
 <p>Initialize the virtual environment, install dependencies, and perform the initial build.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Linux/macOS</span>
-bash<span class="w"> </span>run.sh<span class="w"> </span>install
+./run.sh<span class="w"> </span>install
 
 <span class="c1"># Windows</span>
-run.bat<span class="w"> </span>install
+.<span class="se">\r</span>un.bat<span class="w"> </span>install
 </pre></div>
 </div>
 </section>
@@ -419,10 +419,10 @@ run.bat<span class="w"> </span>install
 <h3>2. Development Mode (Markdown Canvas)<a class="headerlink" href="#development-mode-markdown-canvas" title="Link to this heading">#</a></h3>
 <p>Start the local server to access the Markdown Canvas editor. This command automatically activates the Canvas feature.</p>
 <div class="highlight-bash notranslate"><div class="highlight"><pre><span></span><span class="c1"># Linux/macOS</span>
-bash<span class="w"> </span>run.sh<span class="w"> </span>dev
+./run.sh<span class="w"> </span>dev
 
 <span class="c1"># Windows</span>
-run.bat<span class="w"> </span>dev
+.<span class="se">\r</span>un.bat<span class="w"> </span>dev
 </pre></div>
 </div>
 <ul class="simple">
@@ -437,14 +437,14 @@ run.bat<span class="w"> </span>dev
 <section id="build-publish">
 <h3>3. Build &amp; Publish<a class="headerlink" href="#build-publish" title="Link to this heading">#</a></h3>
 <p>Update the Table of Contents and build the static HTML for deployment.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>bash<span class="w"> </span>run.sh<span class="w"> </span>publish
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>./run.sh<span class="w"> </span>publish
 </pre></div>
 </div>
 </section>
 <section id="reset-project">
 <h3>4. Reset Project<a class="headerlink" href="#reset-project" title="Link to this heading">#</a></h3>
 <p>Wipe all build artifacts, virtual environments, and temporary files.</p>
-<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>bash<span class="w"> </span>run.sh<span class="w"> </span>reset
+<div class="highlight-bash notranslate"><div class="highlight"><pre><span></span>./run.sh<span class="w"> </span>reset
 </pre></div>
 </div>
 </section>
@@ -463,7 +463,7 @@ run.bat<span class="w"> </span>dev
 <section id="deployment-github-pages">
 <h2>Deployment (GitHub Pages)<a class="headerlink" href="#deployment-github-pages" title="Link to this heading">#</a></h2>
 <ol class="arabic simple">
-<li><p>Build the book: <code class="docutils literal notranslate"><span class="pre">bash</span> <span class="pre">run.sh</span> <span class="pre">publish</span></code></p></li>
+<li><p>Build the book: <code class="docutils literal notranslate"><span class="pre">./run.sh</span> <span class="pre">publish</span></code></p></li>
 <li><p>Push everything to GitHub.</p></li>
 <li><p>In GitHub Settings &gt; Pages, set Branch to <code class="docutils literal notranslate"><span class="pre">main</span></code> and Folder to <code class="docutils literal notranslate"><span class="pre">/docs</span></code>.</p></li>
 </ol>

@@ -10,20 +10,20 @@ All operations are managed through the master script run.sh (Linux/macOS) or run
 Initialize the virtual environment, install dependencies, and perform the initial build.
 ```bash
 # Linux/macOS
-bash run.sh install
+./run.sh install
 
 # Windows
-run.bat install
+.\run.bat install
 ```
 
 ### 2. Development Mode (Markdown Canvas)
 Start the local server to access the Markdown Canvas editor. This command automatically activates the Canvas feature.
 ```bash
 # Linux/macOS
-bash run.sh dev
+./run.sh dev
 
 # Windows
-run.bat dev
+.\run.bat dev
 ```
 - Book Link: http://127.0.0.1:5000
 - Canvas Link: http://127.0.0.1:5000/canvas
@@ -34,13 +34,13 @@ run.bat dev
 ### 3. Build & Publish
 Update the Table of Contents and build the static HTML for deployment.
 ```bash
-bash run.sh publish
+./run.sh publish
 ```
 
 ### 4. Reset Project
 Wipe all build artifacts, virtual environments, and temporary files.
 ```bash
-bash run.sh reset
+./run.sh reset
 ```
 
 ---
@@ -56,7 +56,7 @@ bash run.sh reset
 
 ## Deployment (GitHub Pages)
 
-1. Build the book: `bash run.sh publish`
+1. Build the book: `./run.sh publish`
 2. Push everything to GitHub.
 3. In GitHub Settings > Pages, set Branch to `main` and Folder to `/docs`.
 
