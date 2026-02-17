@@ -19,7 +19,7 @@ set CURRENT_YEAR=%dt:~0,4%
 
 :: Update _config.yml
 if exist _config.yml (
-    powershell -Command "$c = Get-Content _config.yml; $c = $c -replace '^author: .*', 'author: \"%AUTHOR_NAME%\"'; $c = $c -replace '^  url: .*', '  url: !REPO_URL!'; $c = $c -replace '^  branch: .*', '  branch: main'; if ($c -match '^copyright:') { $c = $c -replace '^copyright: .*', 'copyright: \"%CURRENT_YEAR%\"' } else { $c = $c -replace '^author: .*', \"author: `\"%AUTHOR_NAME%`\"`ncopyright: `\"%CURRENT_YEAR%`\"\" }; Set-Content _config.yml $c"
+    powershell -Command "$c = Get-Content _config.yml -Raw; $c = $c -replace '(?m)^author: .*', 'author: \"%AUTHOR_NAME%\"'; $c = $c -replace '(?m)^  url: .*', '  url: !REPO_URL!'; $c = $c -replace '(?m)^  branch: .*', '  branch: main'; if ($c -match '(?m)^copyright:') { $c = $c -replace '(?m)^copyright: .*', 'copyright: \"%CURRENT_YEAR%\"' } else { $c = $c -replace '(?m)^author: .*', \"author: `\"%AUTHOR_NAME%`\"`ncopyright: `\"%CURRENT_YEAR%`\"\" }; Set-Content _config.yml $c -NoNewline"
     echo [SUCCESS] _config.yml updated.
 ) else (
     echo [ERROR] _config.yml not found!

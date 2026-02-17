@@ -28,7 +28,12 @@ if [ -f "_config.yml" ]; then
     else
         sed -i "/^author:/a copyright: \"$CURRENT_YEAR\"" _config.yml
     fi
+    # Add exclude_patterns if missing
+    if ! grep -q "exclude_patterns:" _config.yml; then
+        echo -e "\n# Pattern to exclude from the build\nexclude_patterns: [\"_build\", \"docs\", \"venv\", \"scripts\", \"run.bat\", \"run.sh\", \"README.md\"]" >> _config.yml
+    fi
     echo "[SUCCESS] _config.yml updated."
+
 else
     echo "[ERROR] _config.yml not found!"
     exit 1

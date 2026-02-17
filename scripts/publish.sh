@@ -28,39 +28,36 @@ get_title() {
     if [ -z "$title" ]; then
         title=$(basename "$file" | sed -E 's/^[0-9]+[_-]//; s/\.(md|ipynb)$//; s/[-_]/ /g')
     fi
-    # Trim title and escape quotes
-    title=$(echo "$title" | xargs | sed 's/"/\\"/g')
     echo "$title"
 }
 
-# Collect chapters first
-CHAPTERS_LIST=""
+CHAPTERS_BLOCK=""
 
 # Numbered files first
-for f in $(find . -maxdepth 2 \( -name "*.md" -o -name "*.ipynb" \) | grep -vE "venv|_build|docs|scripts" | sort); do
+for f in $(find . -maxdepth 2 -name "*.md" -o -name "*.ipynb" | grep -vE "venv|_build|docs|scripts" | sort); do
     fname=$(basename "$f")
     if [[ ! " $IGNORE " =~ " $fname " ]] && [[ "$fname" =~ ^[0-9] ]]; then
         rel_path=$(echo "$f" | sed 's|^\./||; s|\.\(md\|ipynb\)$||')
-        if [[ "$rel_path" == "intro" ]]; then continue; fi
+        if [[ "$rel_path" == "md/intro" || "$rel_path" == "intro" ]]; then continue; fi
         title=$(get_title "$f")
-        CHAPTERS_LIST="${CHAPTERS_LIST}- file: $rel_path\n  title: \"$title\"\n"
+        CHAPTERS_BLOCK="${CHAPTERS_BLOCK}\n- file: $rel_path\n  title: \"$title\""
     fi
 done
 
 # Non-numbered files
-for f in $(find . -maxdepth 2 \( -name "*.md" -o -name "*.ipynb" \) | grep -vE "venv|_build|docs|scripts" | sort); do
+for f in $(find . -maxdepth 2 -name "*.md" -o -name "*.ipynb" | grep -vE "venv|_build|docs|scripts" | sort); do
     fname=$(basename "$f")
     if [[ ! " $IGNORE " =~ " $fname " ]] && [[ ! "$fname" =~ ^[0-9] ]]; then
         rel_path=$(echo "$f" | sed 's|^\./||; s|\.\(md\|ipynb\)$||')
-        if [[ "$rel_path" == "intro" ]]; then continue; fi
+        if [[ "$rel_path" == "md/intro" || "$rel_path" == "intro" ]]; then continue; fi
         title=$(get_title "$f")
-        CHAPTERS_LIST="${CHAPTERS_LIST}- file: $rel_path\n  title: \"$title\"\n"
+        CHAPTERS_BLOCK="${CHAPTERS_BLOCK}\n- file: $rel_path\n  title: \"$title\""
     fi
 done
 
-if [ ! -z "$CHAPTERS_LIST" ]; then
+if [ ! -z "$CHAPTERS_BLOCK" ]; then
     echo "chapters:" >> _toc.yml
-    echo -e "$CHAPTERS_LIST" >> _toc.yml
+    echo -e "$CHAPTERS_BLOCK" >> _toc.yml
 fi
 
 echo "[2/4] Building Jupyter Book..."

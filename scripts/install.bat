@@ -67,7 +67,7 @@ for /f "tokens=2 delims==" %%i in ('wmic os get localdatetime /value') do set dt
 set CURRENT_YEAR=%dt:~0,4%
 
 if exist _config.yml (
-    powershell -Command "$c = Get-Content _config.yml; $c = $c -replace '^author: .*', 'author: \"%AUTHOR_NAME%\"'; $c = $c -replace '^  url: .*', '  url: !REPO_URL!'; $c = $c -replace '^  branch: .*', '  branch: main'; if ($c -match '^copyright:') { $c = $c -replace '^copyright: .*', 'copyright: \"%CURRENT_YEAR%\"' } else { $c = $c -replace '^author: .*', \"author: `\"%AUTHOR_NAME%`\"`ncopyright: `\"%CURRENT_YEAR%`\"\" }; if ($c -notmatch 'exclude_patterns:') { $c += \"`n`n# Pattern to exclude from the build`nexclude_patterns: [`\"_build`\", `\"docs`\", `\"venv`\", `\"scripts`\", `\"run.bat`\", `\"run.sh`\", `\"README.md`\"]\" }; Set-Content _config.yml $c"
+    powershell -Command "$c = Get-Content _config.yml -Raw; $c = $c -replace '(?m)^author: .*', 'author: \"%AUTHOR_NAME%\"'; $c = $c -replace '(?m)^  url: .*', '  url: !REPO_URL!'; $c = $c -replace '(?m)^  branch: .*', '  branch: main'; if ($c -match '(?m)^copyright:') { $c = $c -replace '(?m)^copyright: .*', 'copyright: \"%CURRENT_YEAR%\"' } else { $c = $c -replace '(?m)^author: .*', \"author: `\"%AUTHOR_NAME%`\"`ncopyright: `\"%CURRENT_YEAR%`\"\" }; if ($c -notmatch 'exclude_patterns:') { $c += \"`n`n# Pattern to exclude from the build`nexclude_patterns: [`\"_build`\", `\"docs`\", `\"venv`\", `\"scripts`\", `\"run.bat`\", `\"run.sh`\", `\"README.md`\"]\" }; Set-Content _config.yml $c -NoNewline"
 )
 echo [SUCCESS] Identity updated: %AUTHOR_NAME% ^| %CURRENT_YEAR%
 echo [SUCCESS] Repository set to: !REPO_URL!
