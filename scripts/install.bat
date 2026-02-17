@@ -37,7 +37,7 @@ echo [6/7] Cleaning up sample files...
 if exist Pendat rmdir /S /Q Pendat
 if exist .nojekyll del .nojekyll
 echo. > .nojekyll
-del /F /Q markdown.md markdown-notebooks.md notebooks.ipynb 2>nul
+del /F /Q intro.md markdown.md markdown-notebooks.md notebooks.ipynb 2>nul
 if exist _build\html\markdown.html del /F /Q _build\html\markdown.html
 if exist _build\html\markdown-notebooks.html del /F /Q _build\html\markdown-notebooks.html
 if exist _build\html\notebooks.html del /F /Q _build\html\notebooks.html

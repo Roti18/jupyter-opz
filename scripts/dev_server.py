@@ -331,7 +331,7 @@ CANVAS_HTML = r"""
 # --- LOGIC HELPERS ---
 
 def get_editable_files():
-    ignore = ['README.md', 'requirements.txt', '.nojekyll', 'markdown.md', 'markdown-notebooks.md', 'notebooks.ipynb', '_toc.yml', '_config.yml']
+    ignore = ['README.md', 'requirements.txt', '.nojekyll', 'markdown.md', 'markdown-notebooks.md', 'notebooks.ipynb', '_toc.yml', '_config.yml', 'intro.md']
     files = []
     # Root
     for f in glob.glob("*.md") + glob.glob("*.ipynb"):
@@ -347,7 +347,7 @@ def get_editable_files():
     return sorted(files)
 
 def update_toc():
-    ignore = ['README.md', 'requirements.txt', '.nojekyll', 'markdown.md', 'markdown-notebooks.md', 'notebooks.ipynb']
+    ignore = ['README.md', 'requirements.txt', '.nojekyll', 'markdown.md', 'markdown-notebooks.md', 'notebooks.ipynb', 'intro.md']
     files = []
     # Root
     for f in glob.glob("*.md") + glob.glob("*.ipynb"):
